@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דוג ריזורט | לוח בקרה</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --purple:       #6366f1;
+            --purple-dark:  #4f46e5;
+            --purple-light: #e0e7ff;
+            --green:        #10b981;
+            --green-light:  #d1fae5;
+            --amber:        #f59e0b;
+            --amber-light:  #fef3c7;
+            --red:          #ef4444;
+            --red-light:    #fee2e2;
+            --gray-50:  #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --gray-900: #0f172a;
+        }
+
+        body {
+            font-family: 'Heebo', Arial, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 11px 18px; border: none; border-radius: 12px;
+            font-size: 14px; font-weight: 700; font-family: 'Heebo', sans-serif;
+            cursor: pointer; transition: opacity .2s, transform .1s;
+        }
+        .btn:hover  { opacity: .85; }
+        .btn:active { transform: scale(.97); }
+        .btn-primary { background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%); color: #fff; width: 100%; }
+        .btn-ghost   { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); color: #fff; font-size: 13px; padding: 7px 12px; border-radius: 8px; }
+        .btn-ghost:hover { background: rgba(255,255,255,.28); }
+        .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 8px; }
+
+        /* ══════════════════════════════════ AUTH SCREEN */
+        #screen-auth {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .auth-card {
+            background: #fff; border-radius: 24px; padding: 48px 40px;
+            width: 100%; max-width: 460px; text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,.22);
+        }
+        .auth-paw   { font-size: 68px; line-height: 1; margin-bottom: 14px; }
+        .auth-title { font-size: 30px; font-weight: 900; color: var(--purple-dark); margin-bottom: 4px; }
+        .auth-sub   { font-size: 15px; color: var(--gray-500); margin-bottom: 32px; }
+        .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; text-align: right; }
+        .field label { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+        .field input {
+            padding: 12px 14px; border: 2px solid var(--gray-200); border-radius: 12px;
+            font-size: 13px; font-family: monospace; direction: ltr; text-align: left;
+            outline: none; transition: border-color .2s;
+        }
+        .field input:focus { border-color: var(--purple); }
+        .setup-details { margin-top: 20px; text-align: right; }
+        .setup-details summary { cursor: pointer; font-size: 13px; color: var(--purple); font-weight: 600; padding: 6px 0; list-style: none; }
+        .setup-details summary::before { content: "▸ "; }
+        .setup-details[open] summary::before { content: "▾ "; }
+        .setup-body {
+            background: var(--gray-50); border-radius: 12px; padding: 16px 18px; margin-top: 10px;
+            font-size: 13px; line-height: 2; color: var(--gray-700); text-align: right;
+        }
+        .setup-body ol { padding-right: 18px; }
+        .setup-body a  { color: var(--purple); }
+        .setup-body code {
+            background: var(--gray-200); padding: 2px 7px; border-radius: 5px;
+            font-size: 12px; direction: ltr; display: inline-block;
+        }
+
+        /* ══════════════════════════════════ CALENDAR PICKER */
+        #screen-calendar {
+            min-height: 100vh; display: none; align-items: center; justify-content: center;
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .picker-card {
+            background: #fff; border-radius: 24px; padding: 36px 40px;
+            width: 100%; max-width: 560px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.22);
+        }
+        .picker-card h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+        .picker-card p  { color: var(--gray-500); font-size: 14px; margin-bottom: 4px; }
+        .picker-hint    { font-size: 12px; color: var(--gray-400); margin-bottom: 20px; }
+
+        .cal-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .cal-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 13px 16px; border: 2px solid var(--gray-200); border-radius: 12px;
+            cursor: pointer; transition: border-color .15s, background .15s; user-select: none;
+        }
+        .cal-item:hover    { border-color: var(--purple-dark); background: var(--purple-light); }
+        .cal-item.checked  { border-color: var(--purple-dark); background: var(--purple-light); }
+        .cal-check {
+            width: 20px; height: 20px; border: 2px solid var(--gray-300); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            transition: background .15s, border-color .15s; font-size: 13px;
+        }
+        .cal-item.checked .cal-check { background: var(--purple-dark); border-color: var(--purple-dark); color: #fff; }
+        .cal-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+        .cal-name { font-weight: 600; font-size: 14px; flex: 1; }
+
+        .picker-actions { display: flex; gap: 10px; }
+        .picker-actions .btn { flex: 1; }
+        .btn-outline {
+            background: transparent; border: 2px solid var(--purple-dark); color: var(--purple-dark);
+        }
+        .btn-outline:hover { background: var(--purple-light); }
+
+        /* ══════════════════════════════════ DASHBOARD */
+        #screen-dashboard { display: none; }
+
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #fff; padding: 14px 24px;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+            box-shadow: 0 4px 12px rgba(79,70,229,.3);
+            position: sticky; top: 0; z-index: 200;
+        }
+        .hdr-logo { display: flex; align-items: center; gap: 10px; }
+        .hdr-logo-icon { font-size: 28px; }
+        .hdr-logo h1 { font-size: 19px; font-weight: 900; line-height: 1.15; }
+        .hdr-logo p  { font-size: 11px; opacity: .7; }
+        .hdr-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .hdr-date  { font-size: 12px; opacity: .85; direction: ltr; white-space: nowrap; }
+
+        /* Calendar chips in header */
+        .hdr-cals { display: flex; gap: 6px; flex-wrap: wrap; }
+        .cal-chip {
+            display: flex; align-items: center; gap: 5px;
+            padding: 4px 10px; border-radius: 20px;
+            font-size: 12px; font-weight: 600; cursor: pointer;
+            background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+            transition: background .15s;
+        }
+        .cal-chip:hover { background: rgba(255,255,255,.32); }
+        .cal-chip.off   { opacity: .45; }
+        .cal-chip-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+        main { max-width: 1120px; margin: 0 auto; padding: 24px 18px 48px; }
+
+        /* Stats */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 16px; margin-bottom: 20px;
+        }
+        @media (max-width: 580px) { .stats-grid { grid-template-columns: 1fr; } }
+        .stat-card {
+            background: #fff; border-radius: 20px; padding: 26px 18px; text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,.06); border-top: 4px solid transparent;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+        .stat-card.s-purple { border-top-color: var(--purple); }
+        .stat-card.s-green  { border-top-color: var(--green);  }
+        .stat-card.s-amber  { border-top-color: var(--amber);  }
+        .stat-num { font-size: 56px; font-weight: 900; line-height: 1; margin-bottom: 5px; }
+        .stat-card.s-purple .stat-num { color: var(--purple); }
+        .stat-card.s-green  .stat-num { color: var(--green);  }
+        .stat-card.s-amber  .stat-num { color: var(--amber);  }
+        .stat-lbl { font-size: 13px; font-weight: 600; color: var(--gray-500); }
+
+        /* Cards */
+        .card {
+            background: #fff; border-radius: 20px; padding: 22px 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 18px;
+        }
+        .card-title {
+            font-size: 16px; font-weight: 800; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .card-count {
+            margin-right: auto; /* pushes to left in RTL */
+            background: var(--gray-100); color: var(--gray-500);
+            font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+        }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+        @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+
+        /* Dog items */
+        .dog-list { display: flex; flex-direction: column; gap: 8px; }
+        .dog-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 11px 14px; border-radius: 12px;
+            background: var(--gray-50); border: 1px solid var(--gray-200);
+            gap: 10px;
+        }
+        .dog-left { display: flex; align-items: center; gap: 11px; flex: 1; min-width: 0; }
+        .dog-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; font-weight: 900; flex-shrink: 0; color: #fff;
+        }
+        .dog-info { min-width: 0; flex: 1; }
+        .dog-name  { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dog-owner { font-size: 12px; color: var(--gray-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dog-dates { font-size: 11px; color: var(--gray-400); margin-top: 1px; direction: ltr; text-align: left; }
+        .dog-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+        .badge {
+            font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap;
+        }
+        .badge.checkout { background: var(--amber-light); color: #92400e; }
+        .badge.nights   { background: var(--green-light);  color: #065f46; }
+        .badge.today-out { background: var(--red-light); color: #991b1b; }
+        .cal-source { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+        /* Empty */
+        .empty { text-align: center; padding: 24px 10px; color: var(--gray-400); font-size: 14px; }
+        .empty-icon { font-size: 28px; margin-bottom: 7px; }
+
+        /* Timeline */
+        .timeline-wrap { overflow-x: auto; padding-bottom: 4px; }
+        .timeline-grid {
+            display: grid; grid-template-columns: repeat(14, minmax(50px, 1fr));
+            gap: 5px; align-items: end; min-width: 540px;
+        }
+        .t-day  { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .t-bar-wrap { width: 100%; height: 90px; display: flex; align-items: flex-end; justify-content: center; }
+        .t-bar {
+            width: 68%; border-radius: 6px 6px 0 0; min-height: 4px;
+            position: relative; cursor: default; transition: opacity .15s;
+        }
+        .t-bar:hover { opacity: .8; }
+        .t-bar.today  { background: var(--purple); }
+        .t-bar.future { background: var(--gray-200); }
+        .t-bar:hover::after {
+            content: attr(data-tip);
+            position: absolute; top: -32px; left: 50%; transform: translateX(-50%);
+            background: var(--gray-900); color: #fff;
+            padding: 4px 10px; border-radius: 6px; font-size: 11px; white-space: nowrap; pointer-events: none;
+            z-index: 10;
+        }
+        .t-count { font-size: 13px; font-weight: 700; color: var(--gray-700); }
+        .t-label { font-size: 10px; color: var(--gray-500); text-align: center; line-height: 1.4; }
+        .t-label.is-today { color: var(--purple); font-weight: 800; }
+
+        /* Calendar toggle panel */
+        .cal-panel-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 300;
+            display: none; align-items: flex-start; justify-content: flex-end; padding: 70px 16px 0;
+        }
+        .cal-panel-overlay.open { display: flex; }
+        .cal-panel {
+            background: #fff; border-radius: 16px;
+            padding: 20px; width: 280px;
+            box-shadow: 0 8px 32px rgba(0,0,0,.2);
+            max-height: calc(100vh - 90px); overflow-y: auto;
+        }
+        .cal-panel h3 { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+        .cal-toggle-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 10px; cursor: pointer;
+            transition: background .12s; margin-bottom: 4px;
+        }
+        .cal-toggle-item:hover { background: var(--gray-100); }
+        .cal-toggle-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .cal-toggle-name { font-size: 13px; font-weight: 600; flex: 1; }
+        .toggle-sw {
+            width: 36px; height: 20px; border-radius: 10px; border: none; cursor: pointer;
+            position: relative; transition: background .2s; flex-shrink: 0;
+        }
+        .toggle-sw.on  { background: var(--purple); }
+        .toggle-sw.off { background: var(--gray-300); }
+        .toggle-sw::after {
+            content: ''; position: absolute; top: 3px; width: 14px; height: 14px;
+            border-radius: 50%; background: #fff; transition: left .2s, right .2s;
+        }
+        .toggle-sw.on::after  { left: auto; right: 3px; }
+        .toggle-sw.off::after { left: 3px; }
+        .cal-panel-footer {
+            border-top: 1px solid var(--gray-200); margin-top: 12px; padding-top: 12px;
+            display: flex; gap: 8px;
+        }
+        .cal-panel-footer button {
+            flex: 1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 700;
+            font-family: 'Heebo', sans-serif; cursor: pointer; border: 1px solid var(--gray-200);
+            background: #fff; color: var(--gray-700); transition: background .15s;
+        }
+        .cal-panel-footer button:hover { background: var(--gray-100); }
+        .cal-panel-footer button.add-cal { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); }
+
+        /* Spinner */
+        .loading { text-align: center; padding: 28px; color: var(--gray-400); }
+        .spinner {
+            width: 28px; height: 28px; border: 3px solid var(--gray-200);
+            border-top-color: var(--purple); border-radius: 50%;
+            animation: spin .7s linear infinite; margin: 0 auto 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-banner {
+            background: var(--red-light); color: #991b1b;
+            padding: 12px 16px; border-radius: 12px; font-size: 14px; margin-bottom: 14px;
+        }
+        .refresh-note { text-align: center; font-size: 12px; color: var(--gray-400); margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ AUTH SCREEN -->
+<div id="screen-auth">
+    <div class="auth-card">
+        <div class="auth-paw">🐾</div>
+        <h1 class="auth-title">דוג ריזורט</h1>
+        <p class="auth-sub">לוח בקרה לניהול אורחים</p>
+        <div class="field">
+            <label for="inp-client-id">Google OAuth Client ID</label>
+            <input id="inp-client-id" type="text" placeholder="xxxxxxxxxxxx.apps.googleusercontent.com" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btn btn-primary" onclick="connectGoogle()">🔗 התחבר עם Google</button>
+        <details class="setup-details">
+            <summary>הוראות הגדרה ראשונה</summary>
+            <div class="setup-body">
+                <ol>
+                    <li>פתח את <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a></li>
+                    <li>צור פרויקט → APIs &amp; Services → Enable APIs → <b>Google Calendar API</b></li>
+                    <li>Credentials → Create Credentials → <b>OAuth 2.0 Client ID</b></li>
+                    <li>בחר <b>Web application</b></li>
+                    <li>הוסף Authorized JS origins:<br>
+                        <code>http://localhost:8080</code><br>
+                        <code>https://muaddibbb.github.io</code>
+                    </li>
+                    <li>הדבק את ה-Client ID למעלה ולחץ התחבר</li>
+                </ol>
+                <p style="margin-top:14px;color:var(--gray-500)">
+                    להרצה מקומית:<br>
+                    <code>python3 -m http.server 8080</code><br>
+                    ואז פתח <code>http://localhost:8080</code>
+                </p>
+            </div>
+        </details>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ CALENDAR PICKER -->
+<div id="screen-calendar">
+    <div class="picker-card">
+        <h2>🗓️ בחר לוחות שנה</h2>
+        <p>סמן את כל לוחות השנה שמכילים כלבים</p>
+        <p class="picker-hint">ניתן לבחור יותר מאחד — כולם יופיעו בדשבורד</p>
+        <div class="cal-list" id="cal-list">
+            <div class="loading"><div class="spinner"></div>טוען...</div>
+        </div>
+        <div class="picker-actions">
+            <button class="btn btn-outline" onclick="goBackToAuth()" style="flex:0.4">← חזרה</button>
+            <button class="btn btn-primary" id="btn-confirm-cal" onclick="confirmCalendars()">✓ אישור ופתיחת דשבורד</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ DASHBOARD -->
+<div id="screen-dashboard">
+    <header>
+        <div class="hdr-logo">
+            <span class="hdr-logo-icon">🐾</span>
+            <div>
+                <h1>דוג ריזורט</h1>
+                <p id="hdr-cal-count">לוח בקרה</p>
+            </div>
+        </div>
+        <div class="hdr-right">
+            <div class="hdr-cals" id="hdr-cals"></div>
+            <div class="hdr-date" id="hdr-date"></div>
+            <button class="btn btn-ghost" onclick="loadDashboard()">⟳</button>
+            <button class="btn btn-ghost" onclick="openCalPanel()">📅 לוחות</button>
+        </div>
+    </header>
+
+    <!-- Calendar toggle panel -->
+    <div class="cal-panel-overlay" id="cal-overlay" onclick="closeCalPanel(event)">
+        <div class="cal-panel" id="cal-panel">
+            <h3>🗓️ לוחות שנה פעילים</h3>
+            <div id="cal-toggle-list"></div>
+            <div class="cal-panel-footer">
+                <button onclick="goBackToAuth(); closeCalPanel()">⚙ הגדרות</button>
+                <button class="add-cal" onclick="_showCalendarPicker(); closeCalPanel()">+ הוסף לוח</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div id="err-container"></div>
+        <div class="stats-grid">
+            <div class="stat-card s-purple">
+                <div class="stat-num" id="s-current">–</div>
+                <div class="stat-lbl">🐕 כלבים כרגע</div>
+            </div>
+            <div class="stat-card s-green">
+                <div class="stat-num" id="s-arrivals">–</div>
+                <div class="stat-lbl">📥 הגעות היום</div>
+            </div>
+            <div class="stat-card s-amber">
+                <div class="stat-num" id="s-departures">–</div>
+                <div class="stat-lbl">📤 יציאות היום</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                🐾 כלבים שנמצאים כרגע
+                <span class="card-count" id="cc-current"></span>
+            </div>
+            <div id="list-current"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <div class="card-title">
+                    📥 הגעות היום
+                    <span class="card-count" id="cc-arrivals"></span>
+                </div>
+                <div id="list-arrivals"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">
+                    📤 יציאות היום
+                    <span class="card-count" id="cc-departures"></span>
+                </div>
+                <div id="list-departures"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📅 תחזית 14 יום</div>
+            <div class="timeline-wrap">
+                <div id="timeline"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+        </div>
+
+        <div class="refresh-note" id="refresh-note"></div>
+    </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+// allCalendars: [{id, name, color, active}]
+let allCalendars = JSON.parse(localStorage.getItem('drCalendars') || '[]');
+let clientId     = localStorage.getItem('drClientId') || '';
+let accessToken  = null;
+let tokenClient  = null;
+let refreshTimer = null;
+
+// Temp selection in the picker
+let pickerSelections = {};  // {calId: true/false}
+
+const CAL_COLORS = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#f97316'];
+
+function activeCalendars() { return allCalendars.filter(c => c.active !== false); }
+
+// ═══════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════
+function onGsiReady() {
+    if (clientId) {
+        document.getElementById('inp-client-id').value = clientId;
+        _initClient(clientId);
+        if (allCalendars.length) _requestToken();
+    }
+}
+
+function _initClient(cid) {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: cid,
+        scope: 'https://www.googleapis.com/auth/calendar.readonly',
+        callback: _onToken,
+        error_callback: _onTokenError,
+    });
+}
+
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+function connectGoogle() {
+    const cid = document.getElementById('inp-client-id').value.trim();
+    if (!cid) { alert('אנא הזן Client ID'); return; }
+    clientId = cid;
+    localStorage.setItem('drClientId', cid);
+    _initClient(cid);
+    _requestToken();
+}
+
+function _requestToken(prompt = '') {
+    if (!tokenClient) return;
+    tokenClient.requestAccessToken(prompt ? { prompt } : {});
+}
+
+function _onToken(resp) {
+    if (resp.error) { _onTokenError(resp); return; }
+    accessToken = resp.access_token;
+    if (allCalendars.length) {
+        _showDashboard();
+        loadDashboard();
+    } else {
+        _showCalendarPicker();
+    }
+}
+
+function _onTokenError(err) {
+    if (err.type === 'popup_closed' || err.error === 'access_denied') return;
+    if (err.error === 'interaction_required' || err.type === 'popup_failed_to_open') {
+        _requestToken('consent');
+    }
+}
+
+function goBackToAuth() {
+    _show('screen-auth');
+}
+
+// ═══════════════════════════════════════════
+// CALENDAR PICKER (multi-select)
+// ═══════════════════════════════════════════
+async function _showCalendarPicker() {
+    _show('screen-calendar');
+    const list = document.getElementById('cal-list');
+    pickerSelections = {};
+    // Pre-select already saved calendars
+    allCalendars.forEach(c => { pickerSelections[c.id] = true; });
+
+    try {
+        const data = await _api('https://www.googleapis.com/calendar/v3/users/me/calendarList');
+        list.innerHTML = '';
+        const items = (data.items || []).filter(c =>
+            !c.summary.match(/holidays|birthdays|geburtstag|חגים|ימי הולדת/i)
+        );
+        items.forEach((cal, i) => {
+            const color = cal.backgroundColor || CAL_COLORS[i % CAL_COLORS.length];
+            const checked = !!pickerSelections[cal.id];
+            if (checked) pickerSelections[cal.id] = { id: cal.id, name: cal.summary, color };
+
+            const el = document.createElement('div');
+            el.className = 'cal-item' + (checked ? ' checked' : '');
+            el.dataset.id = cal.id;
+            el.innerHTML = `
+                <div class="cal-check">${checked ? '✓' : ''}</div>
+                <span class="cal-dot" style="background:${color}"></span>
+                <span class="cal-name">${_esc(cal.summary)}</span>`;
+            el.onclick = () => {
+                const isNowChecked = !el.classList.contains('checked');
+                el.classList.toggle('checked', isNowChecked);
+                el.querySelector('.cal-check').textContent = isNowChecked ? '✓' : '';
+                if (isNowChecked) pickerSelections[cal.id] = { id: cal.id, name: cal.summary, color };
+                else              delete pickerSelections[cal.id];
+            };
+            list.appendChild(el);
+        });
+    } catch (e) {
+        list.innerHTML = `<div class="error-banner">שגיאה: ${e.message}</div>`;
+    }
+}
+
+function confirmCalendars() {
+    const selected = Object.values(pickerSelections);
+    if (!selected.length) { alert('בחר לפחות לוח שנה אחד'); return; }
+
+    // Merge with existing (preserve active state for known calendars)
+    const existing = {};
+    allCalendars.forEach(c => existing[c.id] = c.active);
+
+    allCalendars = selected.map(s => ({
+        id: s.id, name: s.name, color: s.color,
+        active: existing[s.id] !== false,  // default active
+    }));
+    localStorage.setItem('drCalendars', JSON.stringify(allCalendars));
+    _showDashboard();
+    loadDashboard();
+}
+
+// ═══════════════════════════════════════════
+// CALENDAR PANEL (toggle in dashboard)
+// ═══════════════════════════════════════════
+function openCalPanel() {
+    const panel = document.getElementById('cal-toggle-list');
+    panel.innerHTML = allCalendars.map((cal, i) => `
+        <div class="cal-toggle-item" onclick="toggleCalendar(${i})">
+            <div class="cal-toggle-dot" style="background:${cal.color}"></div>
+            <div class="cal-toggle-name">${_esc(cal.name)}</div>
+            <button class="toggle-sw ${cal.active !== false ? 'on' : 'off'}" onclick="event.stopPropagation(); toggleCalendar(${i})"></button>
+        </div>`).join('');
+    document.getElementById('cal-overlay').classList.add('open');
+}
+
+function closeCalPanel(e) {
+    if (!e || e.target === document.getElementById('cal-overlay')) {
+        document.getElementById('cal-overlay').classList.remove('open');
+    }
+}
+
+function toggleCalendar(idx) {
+    allCalendars[idx].active = allCalendars[idx].active === false ? true : false;
+    localStorage.setItem('drCalendars', JSON.stringify(allCalendars));
+    openCalPanel();   // re-render panel
+    loadDashboard();
+}
+
+// ═══════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════
+function _showDashboard() {
+    _show('screen-dashboard');
+    _renderHeaderCals();
+    _updateHeaderDate();
+}
+
+function _renderHeaderCals() {
+    const hdr = document.getElementById('hdr-cals');
+    const cnt = document.getElementById('hdr-cal-count');
+    const active = activeCalendars();
+    cnt.textContent = active.length + ' לוח' + (active.length !== 1 ? 'ות' : '') + ' פעיל' + (active.length !== 1 ? 'ים' : '');
+    hdr.innerHTML = allCalendars.map((c, i) => `
+        <span class="cal-chip ${c.active === false ? 'off' : ''}" onclick="toggleCalendar(${i})" title="${_esc(c.name)}">
+            <span class="cal-chip-dot" style="background:${c.color}"></span>
+            ${_esc(c.name.length > 14 ? c.name.slice(0,14)+'…' : c.name)}
+        </span>`).join('');
+}
+
+async function loadDashboard() {
+    clearTimeout(refreshTimer);
+    _clearError();
+    _renderHeaderCals();
+
+    const active = activeCalendars();
+    if (!active.length) {
+        document.getElementById('s-current').textContent = '0';
+        document.getElementById('s-arrivals').textContent = '0';
+        document.getElementById('s-departures').textContent = '0';
+        ['list-current','list-arrivals','list-departures'].forEach(id =>
+            document.getElementById(id).innerHTML = '<div class="empty"><div class="empty-icon">📅</div>אין לוחות שנה פעילים</div>');
+        return;
+    }
+
+    try {
+        const today = _today();
+        const params = new URLSearchParams({
+            timeMin: _addDays(today, -1) + 'T00:00:00Z',
+            timeMax: _addDays(today, 15) + 'T00:00:00Z',
+            singleEvents: 'true',
+            orderBy: 'startTime',
+        });
+
+        // Fetch all active calendars in parallel
+        const results = await Promise.all(active.map(async cal => {
+            const data = await _api(
+                `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cal.id)}/events?${params}`
+            );
+            return (data.items || [])
+                .filter(e => e.summary && e.status !== 'cancelled')
+                .map(e => ({ ...e, _cal: cal }));
+        }));
+
+        const events = results.flat().sort((a, b) =>
+            _startDate(a).localeCompare(_startDate(b)));
+
+        const current    = events.filter(e => _isPresent(e, today));
+        const arrivals   = events.filter(e => _startDate(e) === today);
+        const departures = events.filter(e => _endInclusive(e) === today);
+
+        document.getElementById('s-current').textContent    = current.length;
+        document.getElementById('s-arrivals').textContent   = arrivals.length;
+        document.getElementById('s-departures').textContent = departures.length;
+        document.getElementById('cc-current').textContent    = current.length;
+        document.getElementById('cc-arrivals').textContent   = arrivals.length;
+        document.getElementById('cc-departures').textContent = departures.length;
+
+        _renderList('list-current',    current,    'current',   today);
+        _renderList('list-arrivals',   arrivals,   'arriving',  today);
+        _renderList('list-departures', departures, 'departing', today);
+        _renderTimeline(events, today);
+
+        document.getElementById('refresh-note').textContent =
+            'עודכן: ' + new Date().toLocaleTimeString('he-IL') + ' • מתרענן כל 5 דקות';
+        _updateHeaderDate();
+        refreshTimer = setTimeout(loadDashboard, 5 * 60 * 1000);
+
+    } catch (e) {
+        _showError('שגיאה בטעינת הנתונים: ' + e.message);
+    }
+}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function _renderList(containerId, events, type, today) {
+    const el = document.getElementById(containerId);
+    if (!events.length) {
+        const icons  = { current: '😴', arriving: '🐕', departing: '✅' };
+        const labels = { current: 'אין כלבים כרגע', arriving: 'אין הגעות היום', departing: 'אין יציאות היום' };
+        el.innerHTML = `<div class="empty"><div class="empty-icon">${icons[type]}</div>${labels[type]}</div>`;
+        return;
+    }
+    el.innerHTML = '<div class="dog-list">' + events.map(e => {
+        const parsed = _parseSummary(e.summary);
+        const start  = _startDate(e);
+        const end    = _endInclusive(e);
+        const nights = _daysBetween(start, end) + 1;
+        const color  = e._cal?.color || '#6366f1';
+        const initials = parsed.dog.charAt(0).toUpperCase() || '🐕';
+        const avatarBg = _strColor(parsed.dog);
+
+        let badge = '';
+        if (type === 'current')   badge = `<span class="badge checkout">יוצא ב-${_fmt(end)}</span>`;
+        if (type === 'arriving')  badge = `<span class="badge nights">${nights} לילות</span>`;
+        if (type === 'departing') badge = `<span class="badge today-out">יום אחרון</span>`;
+
+        const multiCal = allCalendars.filter(c => c.active !== false).length > 1;
+
+        return `
+        <div class="dog-item">
+            <div class="dog-left">
+                <div class="dog-avatar" style="background:${avatarBg}">${initials}</div>
+                <div class="dog-info">
+                    <div class="dog-name">${_esc(parsed.dog)}</div>
+                    ${parsed.owner ? `<div class="dog-owner">👤 ${_esc(parsed.owner)}</div>` : ''}
+                    <div class="dog-dates">${_fmt(start)} → ${_fmt(end)}</div>
+                </div>
+            </div>
+            <div class="dog-right">
+                ${badge}
+                ${multiCal ? `<span class="cal-source" style="background:${color}" title="${_esc(e._cal?.name||'')}"></span>` : ''}
+            </div>
+        </div>`;
+    }).join('') + '</div>';
+}
+
+function _renderTimeline(events, today) {
+    const container = document.getElementById('timeline');
+    const days = [];
+    let maxCount = 0;
+    for (let i = 0; i < 14; i++) {
+        const d = _addDays(today, i);
+        const count = events.filter(e => _isPresent(e, d)).length;
+        days.push({ d, count, isToday: i === 0 });
+        if (count > maxCount) maxCount = count;
+    }
+    if (maxCount === 0) {
+        container.innerHTML = '<div class="empty"><div class="empty-icon">📅</div>אין אירועים בשבועיים הקרובים</div>';
+        return;
+    }
+    const MAX_H = 86;
+    container.innerHTML = `<div class="timeline-grid">${days.map(({ d, count, isToday }) => {
+        const h   = Math.max(4, Math.round(count / maxCount * MAX_H));
+        const dt  = new Date(d + 'T12:00:00');
+        const day = dt.toLocaleDateString('he-IL', { weekday: 'short' });
+        const num = dt.getDate();
+        return `<div class="t-day">
+            <div class="t-bar-wrap">
+                <div class="t-bar ${isToday?'today':'future'}" style="height:${h}px" data-tip="${count} כלבים — ${_fmt(d)}"></div>
+            </div>
+            <div class="t-count">${count}</div>
+            <div class="t-label${isToday?' is-today':''}">${day}<br>${num}</div>
+        </div>`;
+    }).join('')}</div>`;
+}
+
+// ═══════════════════════════════════════════
+// EVENT PARSING
+// ═══════════════════════════════════════════
+function _parseSummary(summary) {
+    // Format: "[dog] של [owner] [phone?] (יום X/Y)" or just "[dog name]"
+    const m = summary.match(/^(.+?)\s+של\s+(.+?)(?:\s+\d[\d\-]{6,}|\s*\(|$)/);
+    if (m) return { dog: m[1].trim(), owner: m[2].trim() };
+    // Fallback: remove "(יום X/Y)" or "X\Y" from the name
+    const clean = summary.replace(/\s*\(\s*יום\s+[\d/]+\s*\)/g, '')
+                         .replace(/\s+\d+\\d+$/, '').trim();
+    return { dog: clean, owner: null };
+}
+
+// ═══════════════════════════════════════════
+// DATE HELPERS
+// ═══════════════════════════════════════════
+function _today() {
+    const d = new Date();
+    return _pad(d.getFullYear())+'-'+_pad(d.getMonth()+1)+'-'+_pad(d.getDate());
+}
+function _pad(n) { return String(n).padStart(2,'0'); }
+function _addDays(dateStr, n) {
+    const d = new Date(dateStr + 'T12:00:00');
+    d.setDate(d.getDate() + n);
+    return _pad(d.getFullYear())+'-'+_pad(d.getMonth()+1)+'-'+_pad(d.getDate());
+}
+function _daysBetween(d1, d2) {
+    return Math.round((new Date(d2+'T12:00:00') - new Date(d1+'T12:00:00')) / 86400000);
+}
+function _startDate(e) { return (e.start.date || e.start.dateTime || '').slice(0,10); }
+function _endRaw(e)    { return (e.end.date   || e.end.dateTime   || '').slice(0,10); }
+function _endInclusive(e) { return e.end.date ? _addDays(_endRaw(e), -1) : _endRaw(e); }
+function _isPresent(e, day) {
+    const s = _startDate(e);
+    return e.end.date ? s <= day && day < _endRaw(e) : s <= day && day <= _endInclusive(e);
+}
+function _fmt(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('he-IL', { day:'numeric', month:'numeric' });
+}
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+async function _api(url) {
+    const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken } });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || 'HTTP ' + res.status);
+    }
+    return res.json();
+}
+
+function _show(id) {
+    ['screen-auth','screen-calendar','screen-dashboard'].forEach(s => {
+        const el = document.getElementById(s);
+        el.style.display = (s === id) ? (s === 'screen-calendar' ? 'flex' : 'block') : 'none';
+    });
+}
+
+function _updateHeaderDate() {
+    document.getElementById('hdr-date').textContent =
+        new Date().toLocaleDateString('he-IL', { weekday:'long', day:'numeric', month:'long' });
+}
+
+function _showError(msg) {
+    document.getElementById('err-container').innerHTML = `<div class="error-banner">⚠️ ${msg}</div>`;
+}
+function _clearError() { document.getElementById('err-container').innerHTML = ''; }
+function _esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Generate a consistent color from a string
+function _strColor(str) {
+    const colors = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#f97316','#84cc16','#0ea5e9'];
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) & 0xffffffff;
+    return colors[Math.abs(h) % colors.length];
+}
+</script>
+
+<script src="https://accounts.google.com/gsi/client" onload="onGsiReady()" async defer></script>
+</body>
+</html>
