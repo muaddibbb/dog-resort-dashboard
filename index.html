@@ -300,6 +300,33 @@
         .cal-panel-footer button:hover { background: var(--gray-100); }
         .cal-panel-footer button.add-cal { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); }
 
+        /* Filter section inside panel */
+        .filter-section { margin-top: 16px; border-top: 1px solid var(--gray-200); padding-top: 14px; }
+        .filter-section h4 { font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 10px; }
+        .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .filter-row label { font-size: 12px; color: var(--gray-700); font-weight: 600; flex: 1; }
+        .filter-toggle {
+            width: 36px; height: 20px; border-radius: 10px; border: none; cursor: pointer;
+            position: relative; transition: background .2s; flex-shrink: 0;
+        }
+        .filter-toggle.on  { background: var(--purple); }
+        .filter-toggle.off { background: var(--gray-300); }
+        .filter-toggle::after {
+            content: ''; position: absolute; top: 3px; width: 14px; height: 14px;
+            border-radius: 50%; background: #fff; transition: left .2s, right .2s;
+        }
+        .filter-toggle.on::after  { left: auto; right: 3px; }
+        .filter-toggle.off::after { left: 3px; }
+        .filter-input-wrap { display: flex; flex-direction: column; gap: 5px; }
+        .filter-input-wrap label { font-size: 12px; color: var(--gray-700); font-weight: 600; }
+        .filter-input-wrap input {
+            width: 100%; padding: 7px 10px; border: 1px solid var(--gray-300); border-radius: 8px;
+            font-size: 12px; font-family: 'Heebo', sans-serif; direction: rtl; outline: none;
+            transition: border-color .2s;
+        }
+        .filter-input-wrap input:focus { border-color: var(--purple); }
+        .filter-input-wrap .hint { font-size: 11px; color: var(--gray-400); }
+
         /* Spinner */
         .loading { text-align: center; padding: 28px; color: var(--gray-400); }
         .spinner {
@@ -392,6 +419,19 @@
         <div class="cal-panel" id="cal-panel">
             <h3>🗓️ לוחות שנה פעילים</h3>
             <div id="cal-toggle-list"></div>
+            <div class="filter-section">
+                <h4>🔍 סינון אירועים</h4>
+                <div class="filter-row">
+                    <label>רק אירועים עם "של" (כלבים בלבד)</label>
+                    <button class="filter-toggle" id="toggle-shel" onclick="toggleShelFilter()"></button>
+                </div>
+                <div class="filter-input-wrap">
+                    <label>הסתר אירועים שמכילים:</label>
+                    <input type="text" id="exclude-input" placeholder="למשל: חופש, פגישה, שבת"
+                           oninput="saveExclude(this.value)">
+                    <span class="hint">הפרד מילות מפתח בפסיק</span>
+                </div>
+            </div>
             <div class="cal-panel-footer">
                 <button onclick="goBackToAuth(); closeCalPanel()">⚙ הגדרות</button>
                 <button class="add-cal" onclick="_showCalendarPicker(); closeCalPanel()">+ הוסף לוח</button>
@@ -465,6 +505,10 @@ let refreshTimer = null;
 
 // Temp selection in the picker
 let pickerSelections = {};  // {calId: true/false}
+
+// Filters
+let filterShelOnly  = localStorage.getItem('drFilterShel')    !== 'false'; // default ON
+let filterExclude   = localStorage.getItem('drFilterExclude') || 'חופש,פגישה';
 
 const CAL_COLORS = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#f97316'];
 
@@ -592,6 +636,7 @@ function confirmCalendars() {
 // CALENDAR PANEL (toggle in dashboard)
 // ═══════════════════════════════════════════
 function openCalPanel() {
+    _updateFilterUI();
     const panel = document.getElementById('cal-toggle-list');
     panel.innerHTML = allCalendars.map((cal, i) => `
         <div class="cal-toggle-item" onclick="toggleCalendar(${i})">
@@ -670,8 +715,9 @@ async function loadDashboard() {
                 .map(e => ({ ...e, _cal: cal }));
         }));
 
-        const events = results.flat().sort((a, b) =>
-            _startDate(a).localeCompare(_startDate(b)));
+        const events = results.flat()
+            .filter(e => _passesFilter(e.summary))
+            .sort((a, b) => _startDate(a).localeCompare(_startDate(b)));
 
         const current    = events.filter(e => _isPresent(e, today));
         const arrivals   = events.filter(e => _startDate(e) === today);
@@ -772,6 +818,40 @@ function _renderTimeline(events, today) {
             <div class="t-label${isToday?' is-today':''}">${day}<br>${num}</div>
         </div>`;
     }).join('')}</div>`;
+}
+
+// ═══════════════════════════════════════════
+// FILTER CONTROLS
+// ═══════════════════════════════════════════
+function toggleShelFilter() {
+    filterShelOnly = !filterShelOnly;
+    localStorage.setItem('drFilterShel', filterShelOnly);
+    _updateFilterUI();
+    loadDashboard();
+}
+
+function saveExclude(val) {
+    filterExclude = val;
+    localStorage.setItem('drFilterExclude', val);
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(loadDashboard, 600);  // debounce while typing
+}
+
+function _updateFilterUI() {
+    const btn = document.getElementById('toggle-shel');
+    if (!btn) return;
+    btn.className = 'filter-toggle ' + (filterShelOnly ? 'on' : 'off');
+    const inp = document.getElementById('exclude-input');
+    if (inp) inp.value = filterExclude;
+}
+
+function _passesFilter(summary) {
+    if (filterShelOnly && !summary.includes('של')) return false;
+    if (filterExclude) {
+        const words = filterExclude.split(',').map(w => w.trim()).filter(Boolean);
+        if (words.some(w => summary.includes(w))) return false;
+    }
+    return true;
 }
 
 // ═══════════════════════════════════════════
