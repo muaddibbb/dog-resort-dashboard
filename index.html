@@ -457,31 +457,6 @@
         </div>
 
         <div class="card">
-            <div class="card-title">
-                🐾 כלבים שנמצאים כרגע
-                <span class="card-count" id="cc-current"></span>
-            </div>
-            <div id="list-current"><div class="loading"><div class="spinner"></div></div></div>
-        </div>
-
-        <div class="two-col">
-            <div class="card">
-                <div class="card-title">
-                    📥 הגעות היום
-                    <span class="card-count" id="cc-arrivals"></span>
-                </div>
-                <div id="list-arrivals"></div>
-            </div>
-            <div class="card">
-                <div class="card-title">
-                    📤 יציאות היום
-                    <span class="card-count" id="cc-departures"></span>
-                </div>
-                <div id="list-departures"></div>
-            </div>
-        </div>
-
-        <div class="card">
             <div class="card-title">📅 תחזית 14 יום</div>
             <div class="timeline-wrap">
                 <div id="timeline"><div class="loading"><div class="spinner"></div></div></div>
@@ -726,13 +701,7 @@ async function loadDashboard() {
         document.getElementById('s-current').textContent    = current.length;
         document.getElementById('s-arrivals').textContent   = arrivals.length;
         document.getElementById('s-departures').textContent = departures.length;
-        document.getElementById('cc-current').textContent    = current.length;
-        document.getElementById('cc-arrivals').textContent   = arrivals.length;
-        document.getElementById('cc-departures').textContent = departures.length;
 
-        _renderList('list-current',    current,    'current',   today);
-        _renderList('list-arrivals',   arrivals,   'arriving',  today);
-        _renderList('list-departures', departures, 'departing', today);
         _renderTimeline(events, today);
 
         document.getElementById('refresh-note').textContent =
