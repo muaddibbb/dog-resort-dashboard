@@ -218,6 +218,70 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .error-banner { background: var(--red-light); color: #991b1b; padding: 12px 16px; border-radius: 12px; font-size: 14px; margin-bottom: 12px; }
         .refresh-note { text-align: center; font-size: 11px; color: var(--gray-400); margin-top: 8px; }
+
+        /* ══ DARK MODE ══ */
+        [data-theme="dark"] {
+            --gray-50:  #0f172a;
+            --gray-100: #1e293b;
+            --gray-200: #334155;
+            --gray-300: #475569;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-700: #cbd5e1;
+            --gray-900: #f1f5f9;
+            --purple-light: #1e1b4b;
+            --red-light:    #450a0a;
+        }
+        [data-theme="dark"] body { background: #0f172a; color: #f1f5f9; }
+        /* Cards */
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .color-card,
+        [data-theme="dark"] .card,
+        [data-theme="dark"] .mini-cal,
+        [data-theme="dark"] .day-detail { background: #1e293b; }
+        /* Auth / picker */
+        [data-theme="dark"] .auth-card,
+        [data-theme="dark"] .picker-card { background: #1e293b; color: #f1f5f9; }
+        [data-theme="dark"] .auth-title  { color: #a5b4fc; }
+        [data-theme="dark"] .auth-sub    { color: #94a3b8; }
+        [data-theme="dark"] .google-btn  { background: #1e293b; border-color: #475569; color: #f1f5f9; }
+        /* Timeline */
+        [data-theme="dark"] .t-day:hover   { background: #334155; }
+        [data-theme="dark"] .t-day.active  { background: #1e1b4b; }
+        [data-theme="dark"] .t-count       { color: #e2e8f0; }
+        [data-theme="dark"] .t-label       { color: #94a3b8; }
+        [data-theme="dark"] .t-label.is-today { color: #a5b4fc; }
+        /* Mini calendar */
+        [data-theme="dark"] .cal-day:hover   { background: #334155; }
+        [data-theme="dark"] .cal-day.today   { background: #1e1b4b; color: #a5b4fc; }
+        [data-theme="dark"] .cal-day.selected { background: #4338ca !important; color: #fff !important; }
+        [data-theme="dark"] .cal-day-hdr     { color: #475569; }
+        /* Day detail */
+        [data-theme="dark"] .day-total    { background: #0f172a; }
+        [data-theme="dark"] .day-cat      { background: #0f172a !important; }
+        [data-theme="dark"] .day-arr-chip { background: #064e3b; color: #6ee7b7; }
+        [data-theme="dark"] .day-dep-chip { background: #451a03; color: #fcd34d; }
+        [data-theme="dark"] .no-selection { color: #475569; }
+        /* Settings panel */
+        [data-theme="dark"] .cal-panel          { background: #1e293b; color: #f1f5f9; }
+        [data-theme="dark"] .cal-panel-overlay  { }
+        [data-theme="dark"] .cal-toggle-item:hover { background: #334155; }
+        [data-theme="dark"] .panel-section      { border-color: #334155; }
+        [data-theme="dark"] .panel-footer       { border-color: #334155; }
+        [data-theme="dark"] .panel-footer button { background: #0f172a; border-color: #334155; color: #cbd5e1; }
+        [data-theme="dark"] .panel-footer button:hover { background: #334155; }
+        [data-theme="dark"] .panel-footer button.add-cal { background: #1e1b4b; color: #a5b4fc; border-color: #4338ca; }
+        [data-theme="dark"] .filter-input-wrap input  { background: #0f172a; color: #f1f5f9; border-color: #475569; }
+        [data-theme="dark"] select { background: #0f172a; color: #f1f5f9; border-color: #475569; }
+        /* Calendar picker list */
+        [data-theme="dark"] .cal-item          { border-color: #334155; background: #1e293b; color: #f1f5f9; }
+        [data-theme="dark"] .cal-item:hover    { background: #1e1b4b; border-color: #6366f1; }
+        [data-theme="dark"] .cal-item.checked  { background: #1e1b4b; border-color: #6366f1; }
+        [data-theme="dark"] .cal-name          { color: #f1f5f9; }
+        [data-theme="dark"] .btn-outline       { background: #1e293b; border-color: #475569; color: #cbd5e1; }
+        [data-theme="dark"] .btn-outline:hover { background: #334155; }
+        /* Error */
+        [data-theme="dark"] .error-banner { background: #450a0a; color: #fca5a5; }
     </style>
 </head>
 <body>
@@ -267,6 +331,7 @@
             <div class="hdr-cals" id="hdr-cals"></div>
             <div class="hdr-date" id="hdr-date"></div>
             <button class="btn btn-ghost" onclick="loadDashboard()">⟳</button>
+            <button class="btn btn-ghost" id="dark-btn" onclick="toggleDark()">🌙</button>
             <button class="btn btn-ghost" onclick="openCalPanel()">⚙</button>
         </div>
     </header>
@@ -361,6 +426,26 @@
 </div>
 
 <script>
+// ══════════════════════════════════════════
+// DARK MODE (init before anything renders)
+// ══════════════════════════════════════════
+(function() {
+    if (localStorage.getItem('drDark') === '1')
+        document.documentElement.setAttribute('data-theme', 'dark');
+})();
+function toggleDark() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+    localStorage.setItem('drDark', isDark ? '0' : '1');
+    const btn = document.getElementById('dark-btn');
+    if (btn) btn.textContent = isDark ? '🌙' : '☀️';
+}
+// Sync button icon after DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('dark-btn');
+    if (btn && document.documentElement.getAttribute('data-theme') === 'dark') btn.textContent = '☀️';
+});
+
 // ══════════════════════════════════════════
 // CONSTANTS
 // ══════════════════════════════════════════
