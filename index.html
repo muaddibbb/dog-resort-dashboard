@@ -14,9 +14,7 @@
             --purple-dark:  #4f46e5;
             --purple-light: #e0e7ff;
             --green:        #10b981;
-            --green-light:  #d1fae5;
             --amber:        #f59e0b;
-            --amber-light:  #fef3c7;
             --red:          #ef4444;
             --red-light:    #fee2e2;
             --gray-50:  #f8fafc;
@@ -31,33 +29,30 @@
         body { font-family: 'Heebo', Arial, sans-serif; background: var(--gray-50); color: var(--gray-900); direction: rtl; min-height: 100vh; }
 
         /* ── BUTTONS ── */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 18px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; font-family: 'Heebo', sans-serif; cursor: pointer; transition: opacity .2s, transform .1s; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; font-family: 'Heebo', sans-serif; cursor: pointer; transition: opacity .2s, transform .1s; }
         .btn:hover  { opacity: .85; }
         .btn:active { transform: scale(.97); }
         .btn-primary { background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%); color: #fff; width: 100%; }
         .btn-ghost   { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); color: #fff; font-size: 13px; padding: 7px 12px; border-radius: 8px; }
         .btn-ghost:hover { background: rgba(255,255,255,.28); }
-        .btn-outline { background: transparent; border: 2px solid var(--purple-dark); color: var(--purple-dark); }
-        .btn-outline:hover { background: var(--purple-light); }
+        .btn-outline { background: #fff; border: 2px solid var(--gray-200); color: var(--gray-700); }
+        .btn-outline:hover { background: var(--gray-100); }
 
         /* ══ AUTH ══ */
         #screen-auth { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .auth-card { background: #fff; border-radius: 24px; padding: 48px 40px; width: 100%; max-width: 460px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.22); }
-        .auth-paw   { font-size: 68px; line-height: 1; margin-bottom: 14px; }
-        .auth-title { font-size: 30px; font-weight: 900; color: var(--purple-dark); margin-bottom: 4px; }
-        .auth-sub   { font-size: 15px; color: var(--gray-500); margin-bottom: 32px; }
-        .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; text-align: right; }
-        .field label { font-size: 13px; font-weight: 600; color: var(--gray-700); }
-        .field input { padding: 12px 14px; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 13px; font-family: monospace; direction: ltr; text-align: left; outline: none; transition: border-color .2s; }
-        .field input:focus { border-color: var(--purple); }
-        .setup-details { margin-top: 20px; text-align: right; }
-        .setup-details summary { cursor: pointer; font-size: 13px; color: var(--purple); font-weight: 600; padding: 6px 0; list-style: none; }
-        .setup-details summary::before { content: "▸ "; }
-        .setup-details[open] summary::before { content: "▾ "; }
-        .setup-body { background: var(--gray-50); border-radius: 12px; padding: 16px 18px; margin-top: 10px; font-size: 13px; line-height: 2; color: var(--gray-700); text-align: right; }
-        .setup-body ol { padding-right: 18px; }
-        .setup-body a  { color: var(--purple); }
-        .setup-body code { background: var(--gray-200); padding: 2px 7px; border-radius: 5px; font-size: 12px; direction: ltr; display: inline-block; }
+        .auth-card { background: #fff; border-radius: 24px; padding: 56px 44px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 24px 64px rgba(0,0,0,.25); }
+        .auth-paw   { font-size: 72px; line-height: 1; margin-bottom: 16px; }
+        .auth-title { font-size: 32px; font-weight: 900; color: var(--purple-dark); margin-bottom: 6px; }
+        .auth-sub   { font-size: 15px; color: var(--gray-500); margin-bottom: 36px; }
+        .google-btn {
+            width: 100%; padding: 14px 20px; border: 2px solid var(--gray-200);
+            border-radius: 14px; background: #fff; font-size: 16px; font-weight: 700;
+            font-family: 'Heebo', sans-serif; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; gap: 12px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .google-btn:hover { border-color: var(--purple); box-shadow: 0 0 0 3px var(--purple-light); }
+        .google-logo { width: 22px; height: 22px; flex-shrink: 0; }
 
         /* ══ CALENDAR PICKER ══ */
         #screen-calendar { min-height: 100vh; display: none; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
@@ -69,7 +64,7 @@
         .cal-item { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border: 2px solid var(--gray-200); border-radius: 12px; cursor: pointer; transition: border-color .15s, background .15s; user-select: none; }
         .cal-item:hover   { border-color: var(--purple-dark); background: var(--purple-light); }
         .cal-item.checked { border-color: var(--purple-dark); background: var(--purple-light); }
-        .cal-check { width: 20px; height: 20px; border: 2px solid var(--gray-300); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, border-color .15s; font-size: 13px; }
+        .cal-check { width: 20px; height: 20px; border: 2px solid var(--gray-300); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
         .cal-item.checked .cal-check { background: var(--purple-dark); border-color: var(--purple-dark); color: #fff; }
         .cal-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
         .cal-name { font-weight: 600; font-size: 14px; flex: 1; }
@@ -80,67 +75,102 @@
         #screen-dashboard { display: none; }
         header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 4px 12px rgba(79,70,229,.3); position: sticky; top: 0; z-index: 200; }
         .hdr-logo { display: flex; align-items: center; gap: 10px; }
-        .hdr-logo-icon { font-size: 28px; }
-        .hdr-logo h1 { font-size: 19px; font-weight: 900; line-height: 1.15; }
+        .hdr-logo h1 { font-size: 19px; font-weight: 900; }
         .hdr-logo p  { font-size: 11px; opacity: .7; }
-        .hdr-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .hdr-right { display: flex; align-items: center; gap: 8px; }
         .hdr-date  { font-size: 12px; opacity: .85; direction: ltr; white-space: nowrap; }
-        .hdr-cals { display: flex; gap: 6px; flex-wrap: wrap; }
-        .cal-chip { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3); transition: background .15s; }
-        .cal-chip:hover { background: rgba(255,255,255,.32); }
+        .hdr-cals { display: flex; gap: 5px; flex-wrap: wrap; }
+        .cal-chip { display: flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); }
+        .cal-chip:hover { background: rgba(255,255,255,.3); }
         .cal-chip.off   { opacity: .4; }
-        .cal-chip-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .cal-chip-dot   { width: 7px; height: 7px; border-radius: 50%; }
 
-        main { max-width: 1100px; margin: 0 auto; padding: 24px 18px 48px; }
+        /* ── Page layout ── */
+        .page-wrap { max-width: 1140px; margin: 0 auto; padding: 22px 18px 48px; display: grid; grid-template-columns: 1fr 290px; gap: 20px; align-items: start; }
+        @media (max-width: 860px) { .page-wrap { grid-template-columns: 1fr; } }
 
-        /* ── Top stats row ── */
-        .stats-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
-        @media (max-width: 580px) { .stats-top { grid-template-columns: 1fr; } }
-        .stat-card { background: #fff; border-radius: 18px; padding: 22px 16px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.06); border-top: 4px solid transparent; transition: transform .2s; }
-        .stat-card:hover { transform: translateY(-2px); }
+        /* ── Left column ── */
+        .stats-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px; }
+        @media (max-width: 500px) { .stats-top { grid-template-columns: 1fr; } }
+        .stat-card { background: #fff; border-radius: 18px; padding: 22px 14px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.06); border-top: 4px solid transparent; }
         .stat-card.s-purple { border-top-color: var(--purple); }
         .stat-card.s-green  { border-top-color: var(--green); }
         .stat-card.s-amber  { border-top-color: var(--amber); }
-        .stat-num { font-size: 54px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+        .stat-num { font-size: 50px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
         .stat-card.s-purple .stat-num { color: var(--purple); }
         .stat-card.s-green  .stat-num { color: var(--green); }
         .stat-card.s-amber  .stat-num { color: var(--amber); }
-        .stat-lbl { font-size: 13px; font-weight: 600; color: var(--gray-500); }
+        .stat-lbl { font-size: 12px; font-weight: 600; color: var(--gray-500); }
 
-        /* ── Color breakdown row ── */
-        .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
-        @media (max-width: 640px) { .color-grid { grid-template-columns: repeat(2, 1fr); } }
-        .color-card {
-            background: #fff; border-radius: 18px; padding: 18px 14px; text-align: center;
-            box-shadow: 0 2px 12px rgba(0,0,0,.06);
-            border-top: 5px solid var(--c, #ccc);
-            transition: transform .2s;
-        }
-        .color-card:hover { transform: translateY(-2px); }
-        .color-num { font-size: 42px; font-weight: 900; line-height: 1; margin-bottom: 6px; color: var(--c, #888); }
-        .color-title { font-size: 13px; font-weight: 800; color: var(--gray-700); margin-bottom: 2px; }
-        .color-sub   { font-size: 11px; color: var(--gray-400); }
-
-        /* ── Section label ── */
-        .section-divider { display: flex; align-items: center; gap: 10px; margin: 20px 0 14px; }
-        .section-divider span { font-size: 13px; font-weight: 700; color: var(--gray-500); white-space: nowrap; }
-        .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+        .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+        @media (max-width: 500px) { .color-grid { grid-template-columns: repeat(2, 1fr); } }
+        .color-card { background: #fff; border-radius: 16px; padding: 16px 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.06); border-top: 5px solid var(--c,#ccc); }
+        .color-num   { font-size: 36px; font-weight: 900; color: var(--c,#888); line-height: 1; margin-bottom: 5px; }
+        .color-title { font-size: 12px; font-weight: 800; color: var(--gray-700); margin-bottom: 2px; }
+        .color-sub   { font-size: 10px; color: var(--gray-400); }
 
         /* ── Timeline ── */
-        .card { background: #fff; border-radius: 20px; padding: 22px 24px; box-shadow: 0 2px 12px rgba(0,0,0,.06); margin-bottom: 18px; }
-        .card-title { font-size: 16px; font-weight: 800; margin-bottom: 16px; }
+        .card { background: #fff; border-radius: 18px; padding: 20px 22px; box-shadow: 0 2px 10px rgba(0,0,0,.06); margin-bottom: 14px; }
+        .card-title { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
         .timeline-wrap { overflow-x: auto; padding-bottom: 4px; }
-        .timeline-grid { display: grid; grid-template-columns: repeat(14, minmax(50px, 1fr)); gap: 5px; align-items: end; min-width: 540px; }
-        .t-day  { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-        .t-bar-wrap { width: 100%; height: 100px; display: flex; align-items: flex-end; justify-content: center; }
-        /* stacked bar */
-        .t-stack { width: 72%; display: flex; flex-direction: column-reverse; border-radius: 6px 6px 0 0; overflow: hidden; min-height: 4px; }
-        .t-seg { width: 100%; transition: height .3s; }
+        .timeline-grid { display: grid; grid-template-columns: repeat(14, minmax(46px, 1fr)); gap: 4px; align-items: end; min-width: 520px; }
+        .t-day  { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; border-radius: 8px; padding: 4px 2px; transition: background .15s; }
+        .t-day:hover   { background: var(--gray-100); }
+        .t-day.active  { background: var(--purple-light); }
+        .t-bar-wrap { width: 100%; height: 90px; display: flex; align-items: flex-end; justify-content: center; }
+        .t-stack { width: 70%; display: flex; flex-direction: column-reverse; border-radius: 6px 6px 0 0; overflow: hidden; min-height: 4px; }
+        .t-seg   { width: 100%; }
         .t-count { font-size: 12px; font-weight: 700; color: var(--gray-700); }
         .t-label { font-size: 10px; color: var(--gray-500); text-align: center; line-height: 1.4; }
         .t-label.is-today { color: var(--purple); font-weight: 800; }
+        .timeline-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; font-size: 11px; color: var(--gray-500); }
+        .legend-item { display: flex; align-items: center; gap: 4px; }
+        .legend-dot  { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 
-        /* ── Side panel ── */
+        /* ── Right sidebar ── */
+        .sidebar { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 14px; }
+        @media (max-width: 860px) { .sidebar { position: static; } }
+
+        /* Mini Calendar */
+        .mini-cal { background: #fff; border-radius: 18px; padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+        .mini-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .mini-cal-title  { font-size: 14px; font-weight: 800; }
+        .mini-nav { background: none; border: none; cursor: pointer; font-size: 16px; color: var(--gray-500); padding: 4px 8px; border-radius: 6px; transition: background .15s; }
+        .mini-nav:hover { background: var(--gray-100); }
+        .mini-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; direction: ltr; }
+        .cal-day-hdr { font-size: 10px; font-weight: 700; color: var(--gray-400); text-align: center; padding: 3px 0 6px; }
+        .cal-day {
+            aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600;
+            transition: background .12s; position: relative; gap: 2px;
+        }
+        .cal-day:hover    { background: var(--gray-100); }
+        .cal-day.today    { background: var(--purple-light); color: var(--purple-dark); font-weight: 900; }
+        .cal-day.selected { background: var(--purple-dark) !important; color: #fff !important; }
+        .cal-day.other-month { color: var(--gray-300); }
+        .cal-day.empty    { cursor: default; }
+        .cal-dots { display: flex; gap: 2px; justify-content: center; }
+        .cal-dot-event { width: 4px; height: 4px; border-radius: 50%; }
+
+        /* Day Detail */
+        .day-detail { background: #fff; border-radius: 18px; padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,.06); min-height: 160px; }
+        .day-detail-hdr { margin-bottom: 14px; }
+        .day-detail-date { font-size: 16px; font-weight: 900; color: var(--gray-900); }
+        .day-detail-sub  { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+        .day-total { text-align: center; margin-bottom: 14px; padding: 10px; background: var(--gray-50); border-radius: 12px; }
+        .day-total-num { font-size: 36px; font-weight: 900; color: var(--purple); line-height: 1; }
+        .day-total-lbl { font-size: 11px; color: var(--gray-500); font-weight: 600; }
+        .day-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .day-cat { border-radius: 10px; padding: 10px 8px; text-align: center; border-top: 3px solid var(--c,#ccc); }
+        .day-cat-num   { font-size: 24px; font-weight: 900; color: var(--c,#888); line-height: 1; margin-bottom: 3px; }
+        .day-cat-title { font-size: 10px; font-weight: 700; color: var(--gray-700); }
+        .day-cat-sub   { font-size: 9px; color: var(--gray-400); }
+        .day-arrivals-row { display: flex; gap: 8px; font-size: 12px; }
+        .day-arr-chip { flex: 1; background: #d1fae5; color: #065f46; border-radius: 8px; padding: 7px; text-align: center; font-weight: 700; }
+        .day-dep-chip { flex: 1; background: #fef3c7; color: #92400e; border-radius: 8px; padding: 7px; text-align: center; font-weight: 700; }
+        .no-selection { text-align: center; padding: 24px 10px; color: var(--gray-400); font-size: 13px; }
+
+        /* Settings panel */
         .cal-panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 300; display: none; align-items: flex-start; justify-content: flex-end; padding: 70px 16px 0; }
         .cal-panel-overlay.open { display: flex; }
         .cal-panel { background: #fff; border-radius: 16px; padding: 20px; width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,.2); max-height: calc(100vh - 90px); overflow-y: auto; }
@@ -152,11 +182,9 @@
         .toggle-sw { width: 36px; height: 20px; border-radius: 10px; border: none; cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0; }
         .toggle-sw.on  { background: var(--purple); }
         .toggle-sw.off { background: var(--gray-300); }
-        .toggle-sw::after { content: ''; position: absolute; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: left .2s, right .2s; }
-        .toggle-sw.on::after  { left: auto; right: 3px; }
+        .toggle-sw::after { content: ''; position: absolute; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+        .toggle-sw.on::after  { right: 3px; }
         .toggle-sw.off::after { left: 3px; }
-
-        /* Filter section */
         .panel-section { border-top: 1px solid var(--gray-200); margin-top: 14px; padding-top: 14px; }
         .panel-section h4 { font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 10px; }
         .filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
@@ -167,38 +195,29 @@
         .filter-toggle::after { content: ''; position: absolute; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
         .filter-toggle.on::after  { right: 3px; }
         .filter-toggle.off::after { left: 3px; }
-        .filter-input-wrap { display: flex; flex-direction: column; gap: 5px; }
-        .filter-input-wrap label { font-size: 12px; color: var(--gray-700); font-weight: 600; }
-        .filter-input-wrap input { width: 100%; padding: 7px 10px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 12px; font-family: 'Heebo', sans-serif; direction: rtl; outline: none; transition: border-color .2s; }
+        .filter-input-wrap { display: flex; flex-direction: column; gap: 4px; }
+        .filter-input-wrap label { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+        .filter-input-wrap input { padding: 7px 10px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 12px; font-family: 'Heebo', sans-serif; direction: rtl; outline: none; }
         .filter-input-wrap input:focus { border-color: var(--purple); }
         .filter-input-wrap .hint { font-size: 11px; color: var(--gray-400); }
-
-        /* Color mapping section */
         .cmap-row { margin-bottom: 12px; }
-        .cmap-label { font-size: 12px; font-weight: 700; color: var(--gray-700); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-        .cmap-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .cmap-label { font-size: 12px; font-weight: 700; color: var(--gray-700); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+        .cmap-dot { width: 10px; height: 10px; border-radius: 50%; }
         .cmap-swatches { display: flex; flex-wrap: wrap; gap: 5px; }
-        .swatch {
-            width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-            border: 2px solid transparent; transition: transform .15s, border-color .15s;
-        }
+        .swatch { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .15s; }
         .swatch:hover { transform: scale(1.2); }
         .swatch.active { border-color: var(--gray-900); transform: scale(1.15); }
-
-        /* Panel footer */
         .panel-footer { border-top: 1px solid var(--gray-200); margin-top: 14px; padding-top: 12px; display: flex; gap: 8px; }
         .panel-footer button { flex: 1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 700; font-family: 'Heebo', sans-serif; cursor: pointer; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-700); transition: background .15s; }
         .panel-footer button:hover { background: var(--gray-100); }
         .panel-footer button.add-cal { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple); }
 
         /* Misc */
-        .loading { text-align: center; padding: 28px; color: var(--gray-400); }
-        .spinner { width: 28px; height: 28px; border: 3px solid var(--gray-200); border-top-color: var(--purple); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 8px; }
+        .loading { text-align: center; padding: 24px; color: var(--gray-400); }
+        .spinner { width: 26px; height: 26px; border: 3px solid var(--gray-200); border-top-color: var(--purple); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .error-banner { background: var(--red-light); color: #991b1b; padding: 12px 16px; border-radius: 12px; font-size: 14px; margin-bottom: 14px; }
-        .empty { text-align: center; padding: 24px 10px; color: var(--gray-400); font-size: 14px; }
-        .empty-icon { font-size: 28px; margin-bottom: 7px; }
-        .refresh-note { text-align: center; font-size: 12px; color: var(--gray-400); margin-top: 10px; }
+        .error-banner { background: var(--red-light); color: #991b1b; padding: 12px 16px; border-radius: 12px; font-size: 14px; margin-bottom: 12px; }
+        .refresh-note { text-align: center; font-size: 11px; color: var(--gray-400); margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -209,27 +228,15 @@
         <div class="auth-paw">🐾</div>
         <h1 class="auth-title">דוג ריזורט</h1>
         <p class="auth-sub">לוח בקרה לניהול אורחים</p>
-        <div class="field">
-            <label for="inp-client-id">Google OAuth Client ID</label>
-            <input id="inp-client-id" type="text" placeholder="xxxxxxxxxxxx.apps.googleusercontent.com" autocomplete="off" spellcheck="false">
-        </div>
-        <button class="btn btn-primary" onclick="connectGoogle()">🔗 התחבר עם Google</button>
-        <details class="setup-details">
-            <summary>הוראות הגדרה ראשונה</summary>
-            <div class="setup-body">
-                <ol>
-                    <li>פתח את <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a></li>
-                    <li>צור פרויקט → APIs &amp; Services → Enable APIs → <b>Google Calendar API</b></li>
-                    <li>Credentials → Create Credentials → <b>OAuth 2.0 Client ID</b></li>
-                    <li>בחר <b>Web application</b></li>
-                    <li>הוסף Authorized JS origins:<br>
-                        <code>https://muaddibbb.github.io</code><br>
-                        <code>http://localhost:8080</code>
-                    </li>
-                </ol>
-                <p style="margin-top:14px;color:var(--gray-500)">הרצה מקומית: <code>python3 -m http.server 8080</code></p>
-            </div>
-        </details>
+        <button class="google-btn" onclick="connectGoogle()">
+            <svg class="google-logo" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            התחבר עם Google
+        </button>
     </div>
 </div>
 
@@ -238,13 +245,13 @@
     <div class="picker-card">
         <h2>🗓️ בחר לוחות שנה</h2>
         <p>סמן את כל לוחות השנה שמכילים כלבים</p>
-        <p class="picker-hint">ניתן לבחור יותר מאחד — כולם יופיעו בדשבורד</p>
+        <p class="picker-hint">ניתן לבחור יותר מאחד — כולם יופיעו ביחד</p>
         <div class="cal-list" id="cal-list">
             <div class="loading"><div class="spinner"></div>טוען...</div>
         </div>
         <div class="picker-actions">
-            <button class="btn btn-outline" onclick="goBackToAuth()" style="flex:0.4">← חזרה</button>
-            <button class="btn btn-primary" onclick="confirmCalendars()">✓ אישור ופתיחת דשבורד</button>
+            <button class="btn btn-outline" onclick="goBackToAuth()" style="flex:0.35">← חזרה</button>
+            <button class="btn btn-primary" onclick="confirmCalendars()">✓ אישור</button>
         </div>
     </div>
 </div>
@@ -253,31 +260,26 @@
 <div id="screen-dashboard">
     <header>
         <div class="hdr-logo">
-            <span class="hdr-logo-icon">🐾</span>
-            <div>
-                <h1>דוג ריזורט</h1>
-                <p id="hdr-cal-count">לוח בקרה</p>
-            </div>
+            <span style="font-size:26px">🐾</span>
+            <div><h1>דוג ריזורט</h1><p id="hdr-cal-count">לוח בקרה</p></div>
         </div>
         <div class="hdr-right">
             <div class="hdr-cals" id="hdr-cals"></div>
             <div class="hdr-date" id="hdr-date"></div>
             <button class="btn btn-ghost" onclick="loadDashboard()">⟳</button>
-            <button class="btn btn-ghost" onclick="openCalPanel()">⚙ הגדרות</button>
+            <button class="btn btn-ghost" onclick="openCalPanel()">⚙</button>
         </div>
     </header>
 
-    <!-- Side panel -->
+    <!-- Settings panel overlay -->
     <div class="cal-panel-overlay" id="cal-overlay" onclick="closeCalPanel(event)">
-        <div class="cal-panel" id="cal-panel">
+        <div class="cal-panel">
             <h3>🗓️ לוחות שנה</h3>
             <div id="cal-toggle-list"></div>
-
             <div class="panel-section">
                 <h4>🎨 מיפוי צבעים</h4>
                 <div id="color-map-ui"></div>
             </div>
-
             <div class="panel-section">
                 <h4>🔍 סינון</h4>
                 <div class="filter-row">
@@ -286,133 +288,133 @@
                 </div>
                 <div class="filter-input-wrap">
                     <label>הסתר מילות מפתח:</label>
-                    <input type="text" id="exclude-input" placeholder="חופש, פגישה, שבת" oninput="saveExclude(this.value)">
+                    <input type="text" id="exclude-input" placeholder='חופש, פגישה' oninput="saveExclude(this.value)">
                     <span class="hint">הפרד בפסיק</span>
                 </div>
             </div>
-
             <div class="panel-footer">
-                <button onclick="_showCalendarPicker(); closeCalPanel()">+ הוסף לוח</button>
-                <button onclick="goBackToAuth(); closeCalPanel()">🔓 התנתק</button>
+                <button class="add-cal" onclick="_showCalendarPicker();closeCalPanel()">+ הוסף לוח</button>
+                <button onclick="signOut()">🔓 התנתק</button>
             </div>
         </div>
     </div>
 
-    <main>
-        <div id="err-container"></div>
+    <div class="page-wrap">
+        <!-- ── LEFT ── -->
+        <div class="dashboard-left">
+            <div id="err-container"></div>
 
-        <!-- Total / Arrivals / Departures -->
-        <div class="stats-top">
-            <div class="stat-card s-purple">
-                <div class="stat-num" id="s-total">–</div>
-                <div class="stat-lbl">🐕 כלבים כרגע</div>
+            <!-- Top stats -->
+            <div class="stats-top">
+                <div class="stat-card s-purple">
+                    <div class="stat-num" id="s-total">–</div>
+                    <div class="stat-lbl">🐕 כלבים כרגע</div>
+                </div>
+                <div class="stat-card s-green">
+                    <div class="stat-num" id="s-arrivals">–</div>
+                    <div class="stat-lbl">📥 הגעות היום</div>
+                </div>
+                <div class="stat-card s-amber">
+                    <div class="stat-num" id="s-departures">–</div>
+                    <div class="stat-lbl">📤 יציאות היום</div>
+                </div>
             </div>
-            <div class="stat-card s-green">
-                <div class="stat-num" id="s-arrivals">–</div>
-                <div class="stat-lbl">📥 הגעות היום</div>
+
+            <!-- Color breakdown -->
+            <div class="color-grid" id="color-grid"></div>
+
+            <!-- Timeline -->
+            <div class="card">
+                <div class="card-title">📅 תחזית 14 יום — לחץ על יום לפירוט</div>
+                <div class="timeline-wrap">
+                    <div id="timeline"><div class="loading"><div class="spinner"></div></div></div>
+                </div>
+                <div class="timeline-legend" id="timeline-legend"></div>
             </div>
-            <div class="stat-card s-amber">
-                <div class="stat-num" id="s-departures">–</div>
-                <div class="stat-lbl">📤 יציאות היום</div>
-            </div>
+
+            <div class="refresh-note" id="refresh-note"></div>
         </div>
 
-        <!-- Color breakdown -->
-        <div class="color-grid" id="color-grid">
-            <!-- rendered by JS -->
-        </div>
-
-        <!-- 14-day timeline -->
-        <div class="card">
-            <div class="card-title">📅 תחזית 14 יום</div>
-            <div class="timeline-wrap">
-                <div id="timeline"><div class="loading"><div class="spinner"></div></div></div>
+        <!-- ── RIGHT SIDEBAR ── -->
+        <div class="sidebar">
+            <!-- Mini Calendar -->
+            <div class="mini-cal">
+                <div class="mini-cal-header">
+                    <button class="mini-nav" onclick="calNavMonth(-1)">›</button>
+                    <div class="mini-cal-title" id="mini-cal-title"></div>
+                    <button class="mini-nav" onclick="calNavMonth(1)">‹</button>
+                </div>
+                <div class="mini-cal-grid" id="mini-cal-grid"></div>
             </div>
-            <!-- legend -->
-            <div id="timeline-legend" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:11px;color:var(--gray-500);"></div>
-        </div>
 
-        <div class="refresh-note" id="refresh-note"></div>
-    </main>
+            <!-- Day Detail -->
+            <div class="day-detail" id="day-detail">
+                <div class="no-selection">לחץ על יום בלוח<br>או בגרף כדי לראות פירוט</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════
-// GOOGLE CALENDAR COLOR PALETTE
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════
+const CLIENT_ID = '90731531536-iu72jicmmlqot8o0h3mjtp6p8f533s57.apps.googleusercontent.com';
+
 const GCAL = {
-    '1':  '#a4bdfc',  // Lavender
-    '2':  '#7ae7bf',  // Sage      ← ירוק בהיר
-    '3':  '#dbadff',  // Grape
-    '4':  '#ff887c',  // Flamingo  ← אפרסק
-    '5':  '#fbd75b',  // Banana
-    '6':  '#ffb878',  // Tangerine
-    '7':  '#46d6db',  // Peacock
-    '8':  '#e1e1e1',  // Graphite
-    '9':  '#5484ed',  // Blueberry ← כחול
-    '10': '#51b749',  // Basil     ← ירוק זית
-    '11': '#dc2127',  // Tomato
+    '1':'#a4bdfc','2':'#7ae7bf','3':'#dbadff','4':'#ff887c',
+    '5':'#fbd75b','6':'#ffb878','7':'#46d6db','8':'#e1e1e1',
+    '9':'#5484ed','10':'#51b749','11':'#dc2127',
 };
 
-// 4 accommodation categories
 const CATS = [
-    { key: 'pack1',  label: 'להקה — יחיד',   sub: '1 כלב',    dogsMin: 1, dogsMax: 1 },
-    { key: 'pack23', label: 'להקה — קבוצה',  sub: '2–3 כלבים', dogsMin: 2, dogsMax: 3 },
-    { key: 'room1',  label: 'חדר — יחיד',    sub: '1 כלב',    dogsMin: 1, dogsMax: 1 },
-    { key: 'room2p', label: 'חדר — קבוצה',   sub: '2+ כלבים',  dogsMin: 2, dogsMax: 99 },
+    { key:'pack1',  label:'להקה — יחיד',  sub:'1 כלב',     dogsMin:1, dogsMax:1  },
+    { key:'pack23', label:'להקה — קבוצה', sub:'2–3 כלבים', dogsMin:2, dogsMax:3  },
+    { key:'room1',  label:'חדר — יחיד',   sub:'1 כלב',     dogsMin:1, dogsMax:1  },
+    { key:'room2p', label:'חדר — קבוצה',  sub:'2+ כלבים',  dogsMin:2, dogsMax:99 },
 ];
 
-// Default color → category mapping (colorId string → category key)
-const COLOR_MAP_DEFAULT = { '9': 'pack1', '4': 'pack23', '10': 'room1', '2': 'room2p' };
+const HEB_DAYS   = ['א','ב','ג','ד','ה','ו','ש'];
+const HEB_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+const CAL_COLORS  = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#f97316'];
 
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════
-let allCalendars  = JSON.parse(localStorage.getItem('drCalendars')  || '[]');
-let colorMap      = JSON.parse(localStorage.getItem('drColorMap')   || 'null') || {...COLOR_MAP_DEFAULT};
+// ══════════════════════════════════════════
+let allCalendars   = JSON.parse(localStorage.getItem('drCalendars')  || '[]');
+let colorMap       = JSON.parse(localStorage.getItem('drColorMap')   || 'null') || {'9':'pack1','4':'pack23','10':'room1','2':'room2p'};
 let filterShelOnly = localStorage.getItem('drFilterShel')    !== 'false';
 let filterExclude  = localStorage.getItem('drFilterExclude') || 'חופש,פגישה';
-let clientId       = localStorage.getItem('drClientId') || '';
 let accessToken    = null;
 let tokenClient    = null;
 let refreshTimer   = null;
 let pickerSelections = {};
-const CAL_COLORS   = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#f97316'];
+
+let cachedEvents   = [];   // all fetched events
+let selectedDate   = null; // currently selected date string YYYY-MM-DD
+let calViewYear    = new Date().getFullYear();
+let calViewMonth   = new Date().getMonth();  // 0-indexed
 
 function activeCalendars() { return allCalendars.filter(c => c.active !== false); }
 
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 // BOOT
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 function onGsiReady() {
-    if (clientId) {
-        document.getElementById('inp-client-id').value = clientId;
-        _initClient(clientId);
-        if (allCalendars.length) _requestToken();
-    }
+    _initClient();
+    if (allCalendars.length) _requestToken();
 }
-function _initClient(cid) {
+function _initClient() {
     tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: cid,
+        client_id: CLIENT_ID,
         scope: 'https://www.googleapis.com/auth/calendar.readonly',
         callback: _onToken,
         error_callback: _onTokenError,
     });
 }
-
-// ═══════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════
-function connectGoogle() {
-    const cid = document.getElementById('inp-client-id').value.trim();
-    if (!cid) { alert('אנא הזן Client ID'); return; }
-    clientId = cid;
-    localStorage.setItem('drClientId', cid);
-    _initClient(cid);
-    _requestToken();
-}
+function connectGoogle() { _requestToken(); }
 function _requestToken(prompt = '') {
-    if (!tokenClient) return;
+    if (!tokenClient) { _initClient(); }
     tokenClient.requestAccessToken(prompt ? { prompt } : {});
 }
 function _onToken(resp) {
@@ -423,86 +425,88 @@ function _onToken(resp) {
 }
 function _onTokenError(err) {
     if (err.type === 'popup_closed' || err.error === 'access_denied') return;
-    if (err.error === 'interaction_required' || err.type === 'popup_failed_to_open') _requestToken('consent');
+    if (err.error === 'interaction_required' || err.type === 'popup_failed_to_open')
+        _requestToken('consent');
+}
+function signOut() {
+    google.accounts.oauth2.revoke(accessToken, () => {});
+    accessToken = null;
+    _show('screen-auth');
+    closeCalPanel();
 }
 function goBackToAuth() { _show('screen-auth'); }
 
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 // CALENDAR PICKER
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 async function _showCalendarPicker() {
     _show('screen-calendar');
     const list = document.getElementById('cal-list');
     pickerSelections = {};
-    allCalendars.forEach(c => { pickerSelections[c.id] = { id: c.id, name: c.name, color: c.color }; });
+    allCalendars.forEach(c => { pickerSelections[c.id] = { id:c.id, name:c.name, color:c.color }; });
     try {
         const data = await _api('https://www.googleapis.com/calendar/v3/users/me/calendarList');
         list.innerHTML = '';
-        const items = (data.items || []).filter(c => !c.summary.match(/holidays|birthdays|חגים|ימי הולדת/i));
+        const items = (data.items||[]).filter(c => !c.summary.match(/holidays|birthdays|חגים|ימי הולדת/i));
         items.forEach((cal, i) => {
             const color = cal.backgroundColor || CAL_COLORS[i % CAL_COLORS.length];
             const checked = !!pickerSelections[cal.id];
-            if (checked) pickerSelections[cal.id] = { id: cal.id, name: cal.summary, color };
+            if (checked) pickerSelections[cal.id] = { id:cal.id, name:cal.summary, color };
             const el = document.createElement('div');
             el.className = 'cal-item' + (checked ? ' checked' : '');
-            el.innerHTML = `<div class="cal-check">${checked ? '✓' : ''}</div>
+            el.innerHTML = `<div class="cal-check">${checked?'✓':''}</div>
                 <span class="cal-dot" style="background:${color}"></span>
                 <span class="cal-name">${_esc(cal.summary)}</span>`;
             el.onclick = () => {
                 const now = !el.classList.contains('checked');
                 el.classList.toggle('checked', now);
                 el.querySelector('.cal-check').textContent = now ? '✓' : '';
-                if (now) pickerSelections[cal.id] = { id: cal.id, name: cal.summary, color };
+                if (now) pickerSelections[cal.id] = { id:cal.id, name:cal.summary, color };
                 else     delete pickerSelections[cal.id];
             };
             list.appendChild(el);
         });
-    } catch (e) { list.innerHTML = `<div class="error-banner">שגיאה: ${e.message}</div>`; }
+    } catch(e) { list.innerHTML = `<div class="error-banner">שגיאה: ${e.message}</div>`; }
 }
 function confirmCalendars() {
     const selected = Object.values(pickerSelections);
     if (!selected.length) { alert('בחר לפחות לוח שנה אחד'); return; }
     const existing = {};
     allCalendars.forEach(c => existing[c.id] = c.active);
-    allCalendars = selected.map(s => ({ id: s.id, name: s.name, color: s.color, active: existing[s.id] !== false }));
+    allCalendars = selected.map(s => ({ id:s.id, name:s.name, color:s.color, active: existing[s.id]!==false }));
     localStorage.setItem('drCalendars', JSON.stringify(allCalendars));
     _showDashboard();
     loadDashboard();
 }
 
-// ═══════════════════════════════════════
-// PANEL
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
+// SETTINGS PANEL
+// ══════════════════════════════════════════
 function openCalPanel() {
-    // Calendar toggles
-    document.getElementById('cal-toggle-list').innerHTML = allCalendars.map((c, i) => `
+    document.getElementById('cal-toggle-list').innerHTML = allCalendars.map((c,i) => `
         <div class="cal-toggle-item" onclick="toggleCalendar(${i})">
             <div class="cal-toggle-dot" style="background:${c.color}"></div>
             <div class="cal-toggle-name">${_esc(c.name)}</div>
             <button class="toggle-sw ${c.active!==false?'on':'off'}" onclick="event.stopPropagation();toggleCalendar(${i})"></button>
         </div>`).join('');
 
-    // Color map UI
-    const cmEl = document.getElementById('color-map-ui');
-    cmEl.innerHTML = CATS.map(cat => {
-        const currentId = Object.entries(colorMap).find(([k,v]) => v === cat.key)?.[0] || '';
-        const swatches = Object.entries(GCAL).map(([id, hex]) => `
-            <div class="swatch ${id===currentId?'active':''}" style="background:${hex}"
-                 title="צבע ${id}" onclick="setColorMap('${id}','${cat.key}',this)"></div>`).join('');
-        const dotColor = currentId ? GCAL[currentId] : '#ccc';
+    document.getElementById('color-map-ui').innerHTML = CATS.map(cat => {
+        const curId = Object.entries(colorMap).find(([k,v]) => v===cat.key)?.[0] || '';
+        const swatches = Object.entries(GCAL).map(([id,hex]) =>
+            `<div class="swatch ${id===curId?'active':''}" style="background:${hex}"
+                 onclick="setColorMap('${id}','${cat.key}',this)"></div>`).join('');
+        const dot = curId ? GCAL[curId] : '#ccc';
         return `<div class="cmap-row">
             <div class="cmap-label">
-                <span class="cmap-dot" style="background:${dotColor}" id="cmap-dot-${cat.key}"></span>
-                ${cat.label} — ${cat.sub}
+                <span class="cmap-dot" style="background:${dot}" id="cmap-dot-${cat.key}"></span>
+                ${cat.label}
             </div>
             <div class="cmap-swatches" id="swatches-${cat.key}">${swatches}</div>
         </div>`;
     }).join('');
 
-    // Filters
-    document.getElementById('toggle-shel').className = 'filter-toggle ' + (filterShelOnly ? 'on' : 'off');
+    document.getElementById('toggle-shel').className = 'filter-toggle ' + (filterShelOnly?'on':'off');
     document.getElementById('exclude-input').value = filterExclude;
-
     document.getElementById('cal-overlay').classList.add('open');
 }
 function closeCalPanel(e) {
@@ -516,27 +520,22 @@ function toggleCalendar(idx) {
     loadDashboard();
 }
 function setColorMap(colorId, catKey, el) {
-    // Remove old mapping for this color and this category
-    Object.keys(colorMap).forEach(k => { if (colorMap[k] === catKey) delete colorMap[k]; });
+    Object.keys(colorMap).forEach(k => { if (colorMap[k]===catKey) delete colorMap[k]; });
     colorMap[colorId] = catKey;
     localStorage.setItem('drColorMap', JSON.stringify(colorMap));
-    // Update swatch highlights for this category
-    const wrap = document.getElementById('swatches-' + catKey);
-    wrap.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    document.getElementById('swatches-'+catKey).querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
     el.classList.add('active');
-    // Update dot color
-    document.getElementById('cmap-dot-' + catKey).style.background = GCAL[colorId];
-    // Reload
+    document.getElementById('cmap-dot-'+catKey).style.background = GCAL[colorId];
     loadDashboard();
 }
 
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 // FILTERS
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 function toggleShelFilter() {
     filterShelOnly = !filterShelOnly;
     localStorage.setItem('drFilterShel', filterShelOnly);
-    document.getElementById('toggle-shel').className = 'filter-toggle ' + (filterShelOnly ? 'on' : 'off');
+    document.getElementById('toggle-shel').className = 'filter-toggle '+(filterShelOnly?'on':'off');
     loadDashboard();
 }
 function saveExclude(val) {
@@ -548,40 +547,54 @@ function saveExclude(val) {
 function _passesFilter(summary) {
     if (filterShelOnly && !summary.includes('של')) return false;
     if (filterExclude) {
-        const words = filterExclude.split(',').map(w => w.trim()).filter(Boolean);
+        const words = filterExclude.split(',').map(w=>w.trim()).filter(Boolean);
         if (words.some(w => summary.includes(w))) return false;
     }
     return true;
 }
 
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 // CATEGORIZE
-// ═══════════════════════════════════════
-function _catOf(event) {
-    const cid = String(event.colorId || '');
-    return colorMap[cid] || null;  // 'pack1' | 'pack23' | 'room1' | 'room2p' | null
-}
+// ══════════════════════════════════════════
+function _catOf(event) { return colorMap[String(event.colorId||'')] || null; }
 function _dogsRange(catKey) {
-    const cat = CATS.find(c => c.key === catKey);
-    return cat ? { min: cat.dogsMin, max: cat.dogsMax } : { min: 1, max: 1 };
+    const cat = CATS.find(c=>c.key===catKey);
+    return cat ? { min:cat.dogsMin, max:cat.dogsMax } : { min:1, max:1 };
+}
+function _computeCounts(events) {
+    const counts = {};
+    CATS.forEach(c => counts[c.key] = 0);
+    let totalMin=0, totalMax=0;
+    events.forEach(e => {
+        const cat = _catOf(e);
+        if (cat) {
+            counts[cat]++;
+            const r = _dogsRange(cat);
+            totalMin += r.min;
+            totalMax += r.max===99 ? r.min : r.max;
+        } else { totalMin++; totalMax++; }
+    });
+    return { counts, totalMin, totalMax };
 }
 
-// ═══════════════════════════════════════
-// DASHBOARD
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
+// DASHBOARD LOAD
+// ══════════════════════════════════════════
 function _showDashboard() {
     _show('screen-dashboard');
     _renderHeaderCals();
     _updateHeaderDate();
+    selectedDate = _today();
 }
+
 function _renderHeaderCals() {
     const active = activeCalendars();
     document.getElementById('hdr-cal-count').textContent =
-        active.length + ' לוח' + (active.length !== 1 ? 'ות' : '') + ' פעיל' + (active.length !== 1 ? 'ים' : '');
-    document.getElementById('hdr-cals').innerHTML = allCalendars.map((c, i) =>
-        `<span class="cal-chip ${c.active===false?'off':''}" onclick="toggleCalendar(${i})" title="${_esc(c.name)}">
+        active.length + ' לוח'+(active.length!==1?'ות':'')+ ' פעיל'+(active.length!==1?'ים':'');
+    document.getElementById('hdr-cals').innerHTML = allCalendars.map((c,i)=>
+        `<span class="cal-chip ${c.active===false?'off':''}" onclick="toggleCalendar(${i})">
             <span class="cal-chip-dot" style="background:${c.color}"></span>
-            ${_esc(c.name.length > 14 ? c.name.slice(0,14)+'…' : c.name)}
+            ${_esc(c.name.length>12?c.name.slice(0,12)+'…':c.name)}
         </span>`).join('');
 }
 
@@ -590,76 +603,67 @@ async function loadDashboard() {
     _clearError();
     _renderHeaderCals();
     const active = activeCalendars();
-    if (!active.length) {
-        document.getElementById('s-total').textContent = '0';
-        document.getElementById('s-arrivals').textContent = '0';
-        document.getElementById('s-departures').textContent = '0';
-        return;
-    }
+    if (!active.length) return;
+
     try {
         const today = _today();
+        if (!selectedDate) selectedDate = today;
+
+        // Fetch wide range: 30 days back + 90 days forward
         const params = new URLSearchParams({
-            timeMin: _addDays(today, -1) + 'T00:00:00Z',
-            timeMax: _addDays(today, 15) + 'T00:00:00Z',
+            timeMin: _addDays(today, -30) + 'T00:00:00Z',
+            timeMax: _addDays(today, 90)  + 'T00:00:00Z',
             singleEvents: 'true',
             orderBy: 'startTime',
         });
         const results = await Promise.all(active.map(async cal => {
-            const data = await _api(
-                `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cal.id)}/events?${params}`
-            );
-            return (data.items || [])
-                .filter(e => e.summary && e.status !== 'cancelled')
-                .map(e => ({ ...e, _cal: cal }));
+            const data = await _api(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(cal.id)}/events?${params}`);
+            return (data.items||[]).filter(e=>e.summary&&e.status!=='cancelled').map(e=>({...e,_cal:cal}));
         }));
-        const allEvents = results.flat().filter(e => _passesFilter(e.summary));
+        cachedEvents = results.flat().filter(e => _passesFilter(e.summary));
 
-        const current    = allEvents.filter(e => _isPresent(e, today));
-        const arrivals   = allEvents.filter(e => _startDate(e) === today);
-        const departures = allEvents.filter(e => _endInclusive(e) === today);
+        const current    = cachedEvents.filter(e => _isPresent(e, today));
+        const arrivals   = cachedEvents.filter(e => _startDate(e) === today);
+        const departures = cachedEvents.filter(e => _endInclusive(e) === today);
 
-        // Count by category
-        const counts = {};
-        CATS.forEach(c => counts[c.key] = 0);
-        let totalMin = 0, totalMax = 0;
-
-        current.forEach(e => {
-            const cat = _catOf(e);
-            if (cat) {
-                counts[cat]++;
-                const r = _dogsRange(cat);
-                totalMin += r.min;
-                totalMax += r.max === 99 ? r.min : r.max;
-            } else {
-                totalMin++; totalMax++;  // unknown color, count as 1
-            }
-        });
-
-        // Display total (show range if ambiguous)
-        const totalStr = totalMin === totalMax ? String(totalMin) : totalMin + '–' + totalMax;
-        document.getElementById('s-total').textContent    = totalStr;
+        const { counts, totalMin, totalMax } = _computeCounts(current);
+        document.getElementById('s-total').textContent      = totalMin===totalMax ? String(totalMin) : totalMin+'–'+totalMax;
         document.getElementById('s-arrivals').textContent   = arrivals.length;
         document.getElementById('s-departures').textContent = departures.length;
 
         _renderColorGrid(counts);
-        _renderTimeline(allEvents, today);
+        _renderTimeline(cachedEvents, today);
+        _renderMiniCal();
+        _renderDayDetail(selectedDate);
 
         document.getElementById('refresh-note').textContent =
             'עודכן: ' + new Date().toLocaleTimeString('he-IL') + ' • מתרענן כל 5 דקות';
         _updateHeaderDate();
         refreshTimer = setTimeout(loadDashboard, 5 * 60 * 1000);
-    } catch (e) {
-        _showError('שגיאה: ' + e.message);
-    }
+    } catch(e) { _showError('שגיאה: ' + e.message); }
 }
 
-// ═══════════════════════════════════════
-// RENDER COLOR GRID
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
+// SELECT DATE (called from timeline or mini-cal)
+// ══════════════════════════════════════════
+function selectDate(dateStr) {
+    selectedDate = dateStr;
+    _renderDayDetail(dateStr);
+    _renderMiniCal();   // re-highlight selected
+    // Update active bar in timeline
+    document.querySelectorAll('.t-day').forEach(el => {
+        el.classList.toggle('active', el.dataset.date === dateStr);
+    });
+    // Scroll day detail into view on mobile
+    document.getElementById('day-detail').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+// ══════════════════════════════════════════
+// RENDER COLOR GRID (today's breakdown)
+// ══════════════════════════════════════════
 function _renderColorGrid(counts) {
-    const grid = document.getElementById('color-grid');
-    grid.innerHTML = CATS.map(cat => {
-        const colorId = Object.entries(colorMap).find(([k, v]) => v === cat.key)?.[0];
+    document.getElementById('color-grid').innerHTML = CATS.map(cat => {
+        const colorId = Object.entries(colorMap).find(([k,v]) => v===cat.key)?.[0];
         const hex = colorId ? GCAL[colorId] : '#ccc';
         return `<div class="color-card" style="--c:${hex}">
             <div class="color-num">${counts[cat.key]}</div>
@@ -669,55 +673,92 @@ function _renderColorGrid(counts) {
     }).join('');
 }
 
-// ═══════════════════════════════════════
-// RENDER TIMELINE (stacked bars)
-// ═══════════════════════════════════════
-function _renderTimeline(allEvents, today) {
+// ══════════════════════════════════════════
+// RENDER DAY DETAIL
+// ══════════════════════════════════════════
+function _renderDayDetail(dateStr) {
+    const el = document.getElementById('day-detail');
+    if (!dateStr || !cachedEvents.length) {
+        el.innerHTML = '<div class="no-selection">לחץ על יום בלוח<br>או בגרף כדי לראות פירוט</div>';
+        return;
+    }
+    const present    = cachedEvents.filter(e => _isPresent(e, dateStr));
+    const arrivals   = cachedEvents.filter(e => _startDate(e) === dateStr);
+    const departures = cachedEvents.filter(e => _endInclusive(e) === dateStr);
+    const { counts, totalMin, totalMax } = _computeCounts(present);
+    const totalStr = totalMin===totalMax ? String(totalMin) : totalMin+'–'+totalMax;
+
+    const dt      = new Date(dateStr + 'T12:00:00');
+    const isToday = dateStr === _today();
+    const dateLabel = dt.toLocaleDateString('he-IL', { weekday:'long', day:'numeric', month:'long' });
+    const subLabel  = isToday ? '🟢 היום' : dateStr < _today() ? '⏮ עבר' : '⏭ עתיד';
+
+    const catCards = CATS.map(cat => {
+        const colorId = Object.entries(colorMap).find(([k,v])=>v===cat.key)?.[0];
+        const hex = colorId ? GCAL[colorId] : '#ccc';
+        return `<div class="day-cat" style="--c:${hex};background:#fafafa">
+            <div class="day-cat-num">${counts[cat.key]}</div>
+            <div class="day-cat-title">${cat.label}</div>
+            <div class="day-cat-sub">${cat.sub}</div>
+        </div>`;
+    }).join('');
+
+    el.innerHTML = `
+        <div class="day-detail-hdr">
+            <div class="day-detail-date">${dateLabel}</div>
+            <div class="day-detail-sub">${subLabel}</div>
+        </div>
+        <div class="day-total">
+            <div class="day-total-num">${present.length}</div>
+            <div class="day-total-lbl">אירועים · ${totalStr} כלבים</div>
+        </div>
+        <div class="day-cats">${catCards}</div>
+        <div class="day-arrivals-row">
+            <div class="day-arr-chip">📥 ${arrivals.length} הגעות</div>
+            <div class="day-dep-chip">📤 ${departures.length} יציאות</div>
+        </div>`;
+}
+
+// ══════════════════════════════════════════
+// RENDER TIMELINE
+// ══════════════════════════════════════════
+function _renderTimeline(events, today) {
     const container = document.getElementById('timeline');
     const days = [];
     let maxTotal = 0;
-
     for (let i = 0; i < 14; i++) {
         const d = _addDays(today, i);
-        const present = allEvents.filter(e => _isPresent(e, d));
+        const present = events.filter(e => _isPresent(e, d));
         const catCounts = {};
-        CATS.forEach(c => catCounts[c.key] = 0);
+        CATS.forEach(c => catCounts[c.key]=0);
         let other = 0;
         present.forEach(e => {
             const cat = _catOf(e);
-            if (cat) catCounts[cat]++;
-            else other++;
+            if (cat) catCounts[cat]++; else other++;
         });
-        const total = present.length;
-        days.push({ d, catCounts, other, total, isToday: i === 0 });
-        if (total > maxTotal) maxTotal = total;
+        days.push({ d, catCounts, other, total:present.length, isToday:i===0 });
+        if (present.length > maxTotal) maxTotal = present.length;
     }
-
     if (maxTotal === 0) {
-        container.innerHTML = '<div class="empty"><div class="empty-icon">📅</div>אין אירועים בשבועיים הקרובים</div>';
-        document.getElementById('timeline-legend').innerHTML = '';
+        container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gray-400)">אין אירועים בשבועיים הקרובים</div>';
         return;
     }
-
-    const MAX_H = 96;
+    const MAX_H = 86;
     container.innerHTML = `<div class="timeline-grid">${days.map(({ d, catCounts, other, total, isToday }) => {
-        const stackH = maxTotal > 0 ? Math.max(4, Math.round(total / maxTotal * MAX_H)) : 4;
+        const stackH = Math.max(4, Math.round(total / maxTotal * MAX_H));
         const dt  = new Date(d + 'T12:00:00');
-        const day = dt.toLocaleDateString('he-IL', { weekday: 'short' });
+        const day = dt.toLocaleDateString('he-IL', { weekday:'short' });
         const num = dt.getDate();
-
-        // Build stacked segments proportional to count
         const segs = CATS.map(cat => {
-            const colorId = Object.entries(colorMap).find(([k, v]) => v === cat.key)?.[0];
+            const colorId = Object.entries(colorMap).find(([k,v])=>v===cat.key)?.[0];
             const hex = colorId ? GCAL[colorId] : '#ccc';
-            const segH = total > 0 ? Math.round(catCounts[cat.key] / total * stackH) : 0;
-            return segH > 0 ? `<div class="t-seg" style="height:${segH}px;background:${hex}"></div>` : '';
+            const h = total > 0 ? Math.round(catCounts[cat.key]/total*stackH) : 0;
+            return h>0 ? `<div class="t-seg" style="height:${h}px;background:${hex}"></div>` : '';
         }).join('');
-        // unclassified events in gray
-        const otherH = total > 0 ? Math.round(other / total * stackH) : 0;
-        const otherSeg = otherH > 0 ? `<div class="t-seg" style="height:${otherH}px;background:#cbd5e1"></div>` : '';
-
-        return `<div class="t-day">
+        const otherH = total>0 ? Math.round(other/total*stackH) : 0;
+        const otherSeg = otherH>0 ? `<div class="t-seg" style="height:${otherH}px;background:#cbd5e1"></div>` : '';
+        const isSelected = d === selectedDate;
+        return `<div class="t-day${isSelected?' active':''}" data-date="${d}" onclick="selectDate('${d}')">
             <div class="t-bar-wrap">
                 <div class="t-stack" style="height:${stackH}px">${segs}${otherSeg}</div>
             </div>
@@ -727,57 +768,120 @@ function _renderTimeline(allEvents, today) {
     }).join('')}</div>`;
 
     // Legend
-    const legend = CATS.map(cat => {
-        const colorId = Object.entries(colorMap).find(([k, v]) => v === cat.key)?.[0];
+    document.getElementById('timeline-legend').innerHTML = CATS.map(cat => {
+        const colorId = Object.entries(colorMap).find(([k,v])=>v===cat.key)?.[0];
         const hex = colorId ? GCAL[colorId] : '#ccc';
-        return `<span style="display:flex;align-items:center;gap:4px;">
-            <span style="width:10px;height:10px;border-radius:3px;background:${hex};display:inline-block;flex-shrink:0"></span>
-            ${cat.label}
-        </span>`;
+        return `<span class="legend-item"><span class="legend-dot" style="background:${hex}"></span>${cat.label}</span>`;
     }).join('');
-    document.getElementById('timeline-legend').innerHTML = legend;
 }
 
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
+// MINI CALENDAR
+// ══════════════════════════════════════════
+function calNavMonth(dir) {
+    calViewMonth += dir;
+    if (calViewMonth > 11) { calViewMonth = 0;  calViewYear++; }
+    if (calViewMonth < 0)  { calViewMonth = 11; calViewYear--; }
+    _renderMiniCal();
+}
+
+function _renderMiniCal() {
+    document.getElementById('mini-cal-title').textContent =
+        HEB_MONTHS[calViewMonth] + ' ' + calViewYear;
+
+    const grid = document.getElementById('mini-cal-grid');
+
+    // Day headers (Sun–Sat, LTR)
+    const hdrs = HEB_DAYS.map(d => `<div class="cal-day-hdr">${d}</div>`).join('');
+
+    // First day of month (0=Sun)
+    const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
+    // Days in month
+    const daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
+    const today = _today();
+
+    // Pre-compute event presence per day for this month
+    const eventMap = {};
+    if (cachedEvents.length) {
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = calViewYear + '-' + _pad(calViewMonth+1) + '-' + _pad(d);
+            const present = cachedEvents.filter(e => _isPresent(e, dateStr));
+            if (present.length > 0) {
+                const cats = new Set(present.map(e => _catOf(e)).filter(Boolean));
+                eventMap[d] = cats;
+            }
+        }
+    }
+
+    // Build cells
+    let cells = '';
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) cells += '<div class="cal-day empty"></div>';
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = calViewYear + '-' + _pad(calViewMonth+1) + '-' + _pad(d);
+        const isToday    = dateStr === today;
+        const isSelected = dateStr === selectedDate;
+        let cls = 'cal-day';
+        if (isToday)    cls += ' today';
+        if (isSelected) cls += ' selected';
+
+        let dots = '';
+        if (eventMap[d] && eventMap[d].size > 0) {
+            const dotHtml = [...eventMap[d]].slice(0,4).map(catKey => {
+                const colorId = Object.entries(colorMap).find(([k,v])=>v===catKey)?.[0];
+                const hex = colorId ? GCAL[colorId] : '#999';
+                return `<span class="cal-dot-event" style="background:${hex}"></span>`;
+            }).join('');
+            dots = `<div class="cal-dots">${dotHtml}</div>`;
+        }
+
+        cells += `<div class="${cls}" onclick="selectDate('${dateStr}')">${d}${dots}</div>`;
+    }
+
+    grid.innerHTML = hdrs + cells;
+}
+
+// ══════════════════════════════════════════
 // DATE HELPERS
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 function _today() {
     const d = new Date();
     return _pad(d.getFullYear())+'-'+_pad(d.getMonth()+1)+'-'+_pad(d.getDate());
 }
 function _pad(n) { return String(n).padStart(2,'0'); }
 function _addDays(dateStr, n) {
-    const d = new Date(dateStr + 'T12:00:00');
-    d.setDate(d.getDate() + n);
+    const d = new Date(dateStr+'T12:00:00');
+    d.setDate(d.getDate()+n);
     return _pad(d.getFullYear())+'-'+_pad(d.getMonth()+1)+'-'+_pad(d.getDate());
 }
-function _startDate(e) { return (e.start.date || e.start.dateTime || '').slice(0,10); }
-function _endRaw(e)    { return (e.end.date   || e.end.dateTime   || '').slice(0,10); }
-function _endInclusive(e) { return e.end.date ? _addDays(_endRaw(e), -1) : _endRaw(e); }
+function _startDate(e)    { return (e.start.date||e.start.dateTime||'').slice(0,10); }
+function _endRaw(e)       { return (e.end.date||e.end.dateTime||'').slice(0,10); }
+function _endInclusive(e) { return e.end.date ? _addDays(_endRaw(e),-1) : _endRaw(e); }
 function _isPresent(e, day) {
     const s = _startDate(e);
-    return e.end.date ? s <= day && day < _endRaw(e) : s <= day && day <= _endInclusive(e);
+    return e.end.date ? s<=day && day<_endRaw(e) : s<=day && day<=_endInclusive(e);
 }
 
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 // API / UI UTILS
-// ═══════════════════════════════════════
+// ══════════════════════════════════════════
 async function _api(url) {
-    const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken } });
-    if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error?.message || 'HTTP '+res.status); }
+    const res = await fetch(url, { headers:{ Authorization:'Bearer '+accessToken } });
+    if (!res.ok) { const err=await res.json().catch(()=>({})); throw new Error(err.error?.message||'HTTP '+res.status); }
     return res.json();
 }
 function _show(id) {
     ['screen-auth','screen-calendar','screen-dashboard'].forEach(s => {
-        document.getElementById(s).style.display = (s===id) ? (s==='screen-calendar'?'flex':'block') : 'none';
+        document.getElementById(s).style.display = (s===id)?(s==='screen-calendar'?'flex':'block'):'none';
     });
 }
 function _updateHeaderDate() {
     document.getElementById('hdr-date').textContent =
-        new Date().toLocaleDateString('he-IL', { weekday:'long', day:'numeric', month:'long' });
+        new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'});
 }
-function _showError(msg) { document.getElementById('err-container').innerHTML = `<div class="error-banner">⚠️ ${msg}</div>`; }
-function _clearError()   { document.getElementById('err-container').innerHTML = ''; }
+function _showError(msg) { document.getElementById('err-container').innerHTML=`<div class="error-banner">⚠️ ${msg}</div>`; }
+function _clearError()   { document.getElementById('err-container').innerHTML=''; }
 function _esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 
