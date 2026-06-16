@@ -540,20 +540,22 @@ function openCalPanel() {
         document.getElementById('color-detect-ui').innerHTML = Object.entries(stats)
             .sort((a,b) => b[1]-a[1])
             .map(([cid, cnt]) => {
-                const hex   = GCAL[cid] || '#94a3b8';
-                const name  = cid ? gcalNames[cid] || 'צבע '+cid : 'ברירת מחדל (ללא צבע)';
-                const catKey = colorMap[cid];
-                const catLabel = catKey ? CATS.find(c=>c.key===catKey)?.label : null;
-                const badge = catLabel
-                    ? `<span style="color:#059669;font-weight:700;font-size:11px">✓ ${catLabel}</span>`
-                    : `<span style="color:#dc2626;font-weight:700;font-size:11px">✗ לא ממופה</span>`;
-                return `<div style="display:flex;align-items:center;gap:9px;padding:7px 4px;border-bottom:1px solid var(--gray-100)">
-                    <div style="width:16px;height:16px;border-radius:50%;background:${hex};flex-shrink:0;border:2px solid rgba(0,0,0,.15)"></div>
+                const hex    = GCAL[cid] || '#94a3b8';
+                const bg     = cid ? `background:${hex}` : `background:repeating-linear-gradient(45deg,#e2e8f0,#e2e8f0 3px,#fff 3px,#fff 6px)`;
+                const name   = cid ? gcalNames[cid] || 'צבע '+cid : 'ברירת מחדל (ללא צבע)';
+                const mapped = colorMap[cid] || '';
+                const opts   = `<option value="">— לא ממופה —</option>`
+                    + CATS.map(c => `<option value="${c.key}" ${mapped===c.key?'selected':''}>${c.label}</option>`).join('');
+                return `<div style="display:flex;align-items:center;gap:9px;padding:8px 4px;border-bottom:1px solid var(--gray-100)">
+                    <div style="width:16px;height:16px;border-radius:50%;${bg};flex-shrink:0;border:2px solid rgba(0,0,0,.15)"></div>
                     <div style="flex:1;min-width:0">
                         <div style="font-size:12px;font-weight:700">${name}</div>
                         <div style="font-size:11px;color:var(--gray-400)">${cnt} אירועים</div>
                     </div>
-                    ${badge}
+                    <select onchange="setColorMapDetect('${cid}',this.value)"
+                        style="font-size:11px;border:1px solid var(--gray-300);border-radius:7px;padding:4px 6px;font-family:Heebo,sans-serif;direction:rtl;background:#fff;cursor:pointer;max-width:110px;${mapped?'color:#059669;font-weight:700':'color:#dc2626;font-weight:700'}">
+                        ${opts}
+                    </select>
                 </div>`;
             }).join('');
     } else {
@@ -573,13 +575,25 @@ function toggleCalendar(idx) {
     loadDashboard();
 }
 function setColorMap(colorId, catKey, el) {
+    // Remove old mapping for this category and set new one
     Object.keys(colorMap).forEach(k => { if (colorMap[k]===catKey) delete colorMap[k]; });
     colorMap[colorId] = catKey;
     localStorage.setItem('drColorMap', JSON.stringify(colorMap));
-    document.getElementById('swatches-'+catKey).querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
-    el.classList.add('active');
-    // Update the dot: '' (default) gets a gray dot, named colors get their hex
-    document.getElementById('cmap-dot-'+catKey).style.background = colorId ? (GCAL[colorId]||'#ccc') : '#94a3b8';
+    // Re-render panel to sync swatch highlights and detected section
+    openCalPanel();
+    loadDashboard();
+}
+// Called from the dropdown in the detected-colors section
+function setColorMapDetect(colorId, catKey) {
+    // Remove any category that was previously mapped to this colorId
+    delete colorMap[colorId];
+    if (catKey) {
+        // Also remove any other colorId that was already mapped to catKey
+        Object.keys(colorMap).forEach(k => { if (colorMap[k]===catKey) delete colorMap[k]; });
+        colorMap[colorId] = catKey;
+    }
+    localStorage.setItem('drColorMap', JSON.stringify(colorMap));
+    openCalPanel(); // re-render to sync swatches + dropdowns
     loadDashboard();
 }
 
