@@ -280,8 +280,13 @@
                 <h4>🎨 מיפוי צבעים</h4>
                 <div id="color-map-ui"></div>
             </div>
+            <div class="panel-section" id="color-detect-section" style="display:none">
+                <h4>🔍 צבעים ביומן שלך</h4>
+                <div style="font-size:11px;color:var(--gray-400);margin-bottom:8px">כמה אירועים יש לכל צבע</div>
+                <div id="color-detect-ui"></div>
+            </div>
             <div class="panel-section">
-                <h4>🔍 סינון</h4>
+                <h4>⚙️ סינון</h4>
                 <div class="filter-row">
                     <label>רק אירועים עם "של"</label>
                     <button class="filter-toggle" id="toggle-shel" onclick="toggleShelFilter()"></button>
@@ -507,6 +512,45 @@ function openCalPanel() {
 
     document.getElementById('toggle-shel').className = 'filter-toggle ' + (filterShelOnly?'on':'off');
     document.getElementById('exclude-input').value = filterExclude;
+
+    // Detected colors section
+    const detectSection = document.getElementById('color-detect-section');
+    if (cachedEvents.length > 0) {
+        detectSection.style.display = '';
+        const gcalNames = {
+            '1':'Lavender — תכלת בהיר','2':'Sage — מנטה','3':'Grape — סגול',
+            '4':'Flamingo — אפרסק','5':'Banana — צהוב','6':'Tangerine — כתום',
+            '7':'Peacock — טורקיז','8':'Graphite — אפור','9':'Blueberry — כחול',
+            '10':'Basil — ירוק כהה','11':'Tomato — אדום',
+        };
+        const stats = {};
+        cachedEvents.forEach(e => {
+            const k = String(e.colorId || '');
+            stats[k] = (stats[k] || 0) + 1;
+        });
+        document.getElementById('color-detect-ui').innerHTML = Object.entries(stats)
+            .sort((a,b) => b[1]-a[1])
+            .map(([cid, cnt]) => {
+                const hex   = GCAL[cid] || '#94a3b8';
+                const name  = cid ? gcalNames[cid] || 'צבע '+cid : 'ברירת מחדל (ללא צבע)';
+                const catKey = colorMap[cid];
+                const catLabel = catKey ? CATS.find(c=>c.key===catKey)?.label : null;
+                const badge = catLabel
+                    ? `<span style="color:#059669;font-weight:700;font-size:11px">✓ ${catLabel}</span>`
+                    : `<span style="color:#dc2626;font-weight:700;font-size:11px">✗ לא ממופה</span>`;
+                return `<div style="display:flex;align-items:center;gap:9px;padding:7px 4px;border-bottom:1px solid var(--gray-100)">
+                    <div style="width:16px;height:16px;border-radius:50%;background:${hex};flex-shrink:0;border:2px solid rgba(0,0,0,.15)"></div>
+                    <div style="flex:1;min-width:0">
+                        <div style="font-size:12px;font-weight:700">${name}</div>
+                        <div style="font-size:11px;color:var(--gray-400)">${cnt} אירועים</div>
+                    </div>
+                    ${badge}
+                </div>`;
+            }).join('');
+    } else {
+        detectSection.style.display = 'none';
+    }
+
     document.getElementById('cal-overlay').classList.add('open');
 }
 function closeCalPanel(e) {
