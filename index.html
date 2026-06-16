@@ -496,17 +496,26 @@ function openCalPanel() {
         </div>`).join('');
 
     document.getElementById('color-map-ui').innerHTML = CATS.map(cat => {
-        const curId = Object.entries(colorMap).find(([k,v]) => v===cat.key)?.[0] || '';
-        const swatches = Object.entries(GCAL).map(([id,hex]) =>
+        const found = Object.entries(colorMap).find(([k,v]) => v===cat.key);
+        const curId = found ? found[0] : null; // null = no mapping; '' = default/no-color mapped
+        const dot   = (curId !== null && curId !== '') ? GCAL[curId] : (curId===''?'#94a3b8':'#ccc');
+        const gcalSwatches = Object.entries(GCAL).map(([id,hex]) =>
             `<div class="swatch ${id===curId?'active':''}" style="background:${hex}"
-                 onclick="setColorMap('${id}','${cat.key}',this)"></div>`).join('');
-        const dot = curId ? GCAL[curId] : '#ccc';
+                 onclick="setColorMap('${id}','${cat.key}',this)" title="${id}"></div>`).join('');
+        // Extra swatch for "no color / default calendar color"
+        const defaultSwatch = `<div class="swatch ${curId===''?'active':''}"
+            style="background:repeating-linear-gradient(45deg,#e2e8f0,#e2e8f0 3px,#fff 3px,#fff 6px)"
+            title="ברירת מחדל (ללא צבע)"
+            onclick="setColorMap('','${cat.key}',this)"></div>`;
         return `<div class="cmap-row">
             <div class="cmap-label">
                 <span class="cmap-dot" style="background:${dot}" id="cmap-dot-${cat.key}"></span>
                 ${cat.label}
             </div>
-            <div class="cmap-swatches" id="swatches-${cat.key}">${swatches}</div>
+            <div class="cmap-swatches" id="swatches-${cat.key}">
+                ${gcalSwatches}${defaultSwatch}
+            </div>
+            <div style="font-size:10px;color:var(--gray-400);text-align:left;margin-top:2px">↑ ברירת מחדל</div>
         </div>`;
     }).join('');
 
@@ -569,7 +578,8 @@ function setColorMap(colorId, catKey, el) {
     localStorage.setItem('drColorMap', JSON.stringify(colorMap));
     document.getElementById('swatches-'+catKey).querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
     el.classList.add('active');
-    document.getElementById('cmap-dot-'+catKey).style.background = GCAL[colorId];
+    // Update the dot: '' (default) gets a gray dot, named colors get their hex
+    document.getElementById('cmap-dot-'+catKey).style.background = colorId ? (GCAL[colorId]||'#ccc') : '#94a3b8';
     loadDashboard();
 }
 
