@@ -703,15 +703,24 @@ function _renderDayDetail(dateStr) {
         </div>`;
     }).join('');
 
+    const uncatCount = present.filter(e => !_catOf(e)).length;
+    const uncatNote = uncatCount > 0
+        ? `<div style="background:#fef3c7;color:#92400e;border-radius:10px;padding:9px 12px;font-size:12px;margin-bottom:10px;text-align:center;line-height:1.4">
+            ⚠️ ${uncatCount} הזמנות ללא מיפוי צבע<br>
+            <span style="font-size:11px;opacity:.8">בדוק הגדרות צבעים ← ⚙</span>
+           </div>`
+        : '';
+
     el.innerHTML = `
         <div class="day-detail-hdr">
             <div class="day-detail-date">${dateLabel}</div>
             <div class="day-detail-sub">${subLabel}</div>
         </div>
         <div class="day-total">
-            <div class="day-total-num">${present.length}</div>
-            <div class="day-total-lbl">אירועים · ${totalStr} כלבים</div>
+            <div class="day-total-num">${totalStr}</div>
+            <div class="day-total-lbl">כלבים · ${present.length} הזמנות</div>
         </div>
+        ${uncatNote}
         <div class="day-cats">${catCards}</div>
         <div class="day-arrivals-row">
             <div class="day-arr-chip">📥 ${arrivals.length} הגעות</div>
