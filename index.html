@@ -917,7 +917,7 @@ function _renderTimeline(events, today) {
         return;
     }
     const MAX_H = 86;
-    container.innerHTML = `<div class="timeline-grid">${days.map(({ d, catCounts, other, total, isToday }) => {
+    container.innerHTML = `<div class="timeline-grid">${days.map(({ d, catCounts, other, total, dogTotal, isToday }) => {
         const stackH = Math.max(4, Math.round(total / maxTotal * MAX_H));
         const dt  = new Date(d + 'T12:00:00');
         const day = dt.toLocaleDateString('he-IL', { weekday:'short' });
