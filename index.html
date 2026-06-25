@@ -906,15 +906,11 @@ function _renderTimeline(events, today) {
     for (let i = 0; i < 14; i++) {
         const d = _addDays(today, i);
         const present = events.filter(e => _isPresent(e, d));
-        const catCounts = {};
-        CATS.forEach(c => catCounts[c.key]=0);
-        let other = 0;
-        present.forEach(e => {
-            const cat = _catOf(e);
-            if (cat) catCounts[cat]++; else other++;
-        });
-        days.push({ d, catCounts, other, total:present.length, isToday:i===0 });
-        if (present.length > maxTotal) maxTotal = present.length;
+        const { counts: catCounts, totalMin, totalMax } = _computeCounts(present);
+        const dogTotal = totalMin === totalMax ? String(totalMin) : totalMin+'–'+totalMax;
+        const other = present.filter(e => !_catOf(e)).length;
+        days.push({ d, catCounts, other, total:present.length, dogTotal, isToday:i===0 });
+        if (totalMax > maxTotal) maxTotal = totalMax;
     }
     if (maxTotal === 0) {
         container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gray-400)">אין אירועים בשבועיים הקרובים</div>';
@@ -939,7 +935,7 @@ function _renderTimeline(events, today) {
             <div class="t-bar-wrap">
                 <div class="t-stack" style="height:${stackH}px">${segs}${otherSeg}</div>
             </div>
-            <div class="t-count">${total}</div>
+            <div class="t-count">${dogTotal}</div>
             <div class="t-label${isToday?' is-today':''}">${day}<br>${num}</div>
         </div>`;
     }).join('')}</div>`;
