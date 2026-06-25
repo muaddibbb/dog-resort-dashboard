@@ -353,8 +353,8 @@
             <div class="panel-section">
                 <h4>⚙️ סינון</h4>
                 <div class="filter-row">
-                    <label>רק אירועים עם "של"</label>
-                    <button class="filter-toggle" id="toggle-shel" onclick="toggleShelFilter()"></button>
+                    <label>רק אירועים עם "של" ✓</label>
+                    <span style="font-size:11px;color:var(--green);font-weight:700">תמיד פעיל</span>
                 </div>
                 <div class="filter-input-wrap">
                     <label>הסתר מילות מפתח:</label>
@@ -477,7 +477,7 @@ const CAL_COLORS  = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4'
 // ══════════════════════════════════════════
 let allCalendars   = JSON.parse(localStorage.getItem('drCalendars')  || '[]');
 let colorMap       = JSON.parse(localStorage.getItem('drColorMap')   || 'null') || {'9':'pack1','4':'pack23','10':'room1','2':'room2p'};
-let filterShelOnly = localStorage.getItem('drFilterShel')    !== 'false';
+const filterShelOnly = true; // always filter — only events containing "של"
 let filterExclude  = localStorage.getItem('drFilterExclude') || 'חופש,פגישה';
 let accessToken    = null;
 let tokenClient    = null;
@@ -608,7 +608,6 @@ function openCalPanel() {
         </div>`;
     }).join('');
 
-    document.getElementById('toggle-shel').className = 'filter-toggle ' + (filterShelOnly?'on':'off');
     document.getElementById('exclude-input').value = filterExclude;
 
     // Detected colors section
@@ -689,12 +688,6 @@ function setColorMapDetect(colorId, catKey) {
 // ══════════════════════════════════════════
 // FILTERS
 // ══════════════════════════════════════════
-function toggleShelFilter() {
-    filterShelOnly = !filterShelOnly;
-    localStorage.setItem('drFilterShel', filterShelOnly);
-    document.getElementById('toggle-shel').className = 'filter-toggle '+(filterShelOnly?'on':'off');
-    loadDashboard();
-}
 function saveExclude(val) {
     filterExclude = val;
     localStorage.setItem('drFilterExclude', val);
