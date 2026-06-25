@@ -711,6 +711,18 @@ function _dogsRange(catKey) {
     const cat = CATS.find(c=>c.key===catKey);
     return cat ? { min:cat.dogsMin, max:cat.dogsMax } : { min:1, max:1 };
 }
+// For group events, count actual dog names before "של" using Hebrew "ו" conjunction.
+// e.g. "רקס ולולה של כהן" → 2,  "רקס ולולה ומקס של כהן" → 3
+function _parseDogCount(event, cat) {
+    if (cat !== 'pack23' && cat !== 'room2p') return null;
+    const summary = event.summary || '';
+    const selIdx = summary.indexOf('של');
+    if (selIdx < 1) return null;
+    const namesPart = summary.slice(0, selIdx).trim();
+    // Split on whitespace followed by "ו" (Hebrew conjunction prefix)
+    const names = namesPart.split(/\s+ו/).filter(n => n.trim().length > 0);
+    return names.length >= 1 ? names.length : null;
+}
 function _computeCounts(events) {
     const counts = {};
     CATS.forEach(c => counts[c.key] = 0);
@@ -719,9 +731,15 @@ function _computeCounts(events) {
         const cat = _catOf(e);
         if (cat) {
             counts[cat]++;
-            const r = _dogsRange(cat);
-            totalMin += r.min;
-            totalMax += r.max===99 ? r.min : r.max;
+            const parsed = _parseDogCount(e, cat);
+            if (parsed !== null) {
+                totalMin += parsed;
+                totalMax += parsed;
+            } else {
+                const r = _dogsRange(cat);
+                totalMin += r.min;
+                totalMax += r.max===99 ? r.min : r.max;
+            }
         } else { totalMin++; totalMax++; }
     });
     return { counts, totalMin, totalMax };
